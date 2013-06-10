@@ -1,0 +1,19 @@
+{
+    "tplfolder": "./templates/",
+    "baseurl": "http://example.com/",
+    "filefolder": "./audio/",
+    "publish": "./pub/",
+    "feeds": [
+        "mp3",
+        "m4a",
+        "opus"
+    ],
+    "web_title": "Podcastname",
+    "feed_title": "Podcastname ({} Feed)",
+    "feed_link": "http://example.com",
+    "feed_description": "Feedbeschreibung/Podcastbeschreibung",
+    "author": "Podcastautor",
+    "artwork_url": "http://example.com/logo.png",
+    "audio_base_url": "http://audio.example.com/",
+    "flattrlink": "https://flattr.com/submit/auto?url={}&title={}&user_id=insaneroot&language=de_DE&category=audio"
+}
