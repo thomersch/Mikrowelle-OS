@@ -10,6 +10,19 @@ You won't need a special webserver to serve the application. You can simply thro
 
 Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([Twitter](http://twitter.com/thomersch), [ADN](http://alpha.app.net/thomersch/)).
 
+## Feature List
+
+* Generating podcast feeds
+	* iTunes compatible
+	* Payment tag (Flattr)
+* Flattr support
+	* New item for every episode, no manual generation needed.
+* Modern player
+	* Podlove Web Player included
+	* Chapter mark support
+* Auphonic support
+* Suitable for heavy load situations
+	* no CGI/PHP bloat
 
 ## Dependencies
 
