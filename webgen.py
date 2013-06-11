@@ -24,6 +24,11 @@ publish = settings["publish"]
 formats = settings["feeds"]
 
 def jsontransform():
+	"""
+		jsontransform() transforms auphonic input files into post files
+		that can be read by the generate() method
+	"""
+
 	for fn in os.listdir(filefolder):
 		if fn.endswith(".json"):
 			with open("{}{}".format(filefolder, fn)) as f:
@@ -44,6 +49,13 @@ def jsontransform():
 			os.rename("{}{}".format(filefolder, fn), "{}{}.txt".format(filefolder, fn))
 
 def generate():
+	# mime type mapping
+	mimetypes = {
+		"mp3": "audio/mpeg",
+		"m4a": "audio/x-m4a",
+		"opus": "audio/opus"
+	}
+
 	# create output folder
 	if os.path.exists("./tmp_output/"):
 		shutil.rmtree("./tmp_output/")
@@ -75,12 +87,7 @@ def generate():
 		elements = []
 		for post in posts:
 			filesize = os.path.getsize("{}{}.{}".format(filefolder, post["filename"], fmt))
-			if fmt == "mp3":
-				mime = "audio/mpeg"
-			elif fmt == "opus":
-				mime = "audio/opus"
-			elif fmt == "m4a":
-				mime = "audio/x-m4a"
+			mime = mimetypes[fmt]
 
 			elements.append(
 				{
