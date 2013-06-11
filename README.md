@@ -6,6 +6,11 @@ Mikrowelle OS is a static page generator for podcast websites and feeds. Tested 
 
 You won't need a special webserver to serve the application. You can simply throw in all podcast data into this application and it will generate all necessary files. Those files can be uploaded to any hosting without any need for CGI, PHP or so.
 
+## Is it working?
+
+Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([Twitter](http://twitter.com/thomersch), [ADN](http://alpha.app.net/thomersch/)).
+
+
 ## Dependencies
 
 * Python
@@ -27,7 +32,7 @@ You won't need a special webserver to serve the application. You can simply thro
 	* Go to `settings.json` and change the values the way you need it.
 * For the best expierence, use Auphonic. For instructions see section *"Working with Auphonic"*.
 * Run `webgen.py`.
-* Publish the `audio` folder and publish the `pub` folder on the interwebz.
+* Publish the `audio` folder and the `pub` folder on the interwebz.
 
 
 ## Working with [Auphonic](http://auphonic.com/)
