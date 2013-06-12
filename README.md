@@ -4,14 +4,6 @@ Mikrowelle OS is a static page generator for podcast websites and feeds.
 
 Tested on Python 2.7. Will not work under Python 2.6, please update in this case. No Python 3 compatibility, yet.
 
-## What does "static page generator" mean?
-
-You won't need a special webserver to serve the application. You can simply throw in all podcast data into this application and it will generate all necessary files. Those files can be uploaded to any hosting without any need for CGI, PHP or so.
-
-## Is it working?
-
-Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([Twitter](http://twitter.com/thomersch), [ADN](http://alpha.app.net/thomersch/)).
-
 ## Feature List
 
 * Generating podcast feeds
@@ -25,6 +17,14 @@ Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.
 * Auphonic support
 * Suitable for heavy load situations
 	* no CGI/PHP bloat
+
+## What does "static page generator" mean?
+
+You won't need a special webserver to serve the application. You can simply throw in all podcast data into this application and it will generate all necessary files. Those files can be uploaded to any hosting without any need for CGI, PHP or so.
+
+## Is it working?
+
+Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([My Website](http://skowron.biz/files/thomas_skowron.asc), [Twitter](http://twitter.com/thomersch), [ADN](http://alpha.app.net/thomersch/)).
 
 ## Dependencies
 
@@ -58,13 +58,13 @@ This application is build for best use with Auphonic: All meta tags should be pu
 
 As output files you should select all of the desired audio data types. Plus you must add the "Production description" as json file.
 
-You may as well add chapter marks, they will be automatically processed in put into the web player.
+You may as well add chapter marks, they will be automatically processed and put into the web player.
 
 The output of auphonic has to be put where the settings.json `filefolder` is configured. The generator will automatically pick up the right files and do the rest.
 
 ## Working without Auphonic
 
-You can run _Mikrowelle OS_ without Auphonic as well. In order to do that, you will need to create a json file per episode an put it into your `posts` folder.
+You can run _Mikrowelle OS_ without Auphonic as well. In order to do that, you will need to create a json file per episode and put it into your `posts` folder.
 
 The file name doesn't really matter, but your episode order will depend on it.
 
@@ -101,9 +101,12 @@ The file name doesn't really matter, but your episode order will depend on it.
 		"title": "001 Title"
 	}
 
-## My website is ugly!
+## Templating
+### Changing the looks of your podcast page.
 
 You can customize your templates at any time. Simply go to the template folder and edit the files. Variables should be rather self explainatory.
+
+If you want to start a new style, I recommend to duplicate the `templates` folder and start editing in the duplicate. Remember to change the `tplfolder` path in `settings.json`.
 
 Adding a stylesheet is nice as well, give it a try.
 
