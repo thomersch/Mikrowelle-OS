@@ -1,6 +1,8 @@
 # Mikrowelle OS
 
-Mikrowelle OS is a static page generator for podcast websites and feeds. Tested on Python 2.7.
+Mikrowelle OS is a static page generator for podcast websites and feeds.
+
+Tested on Python 2.7. Will not work under Python 2.6, please update in this case. No Python 3 compatibility, yet.
 
 ## What does "static page generator" mean?
 

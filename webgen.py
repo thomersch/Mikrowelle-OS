@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 1, 0)
+__version__ = (1, 1, 1)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -9,31 +9,33 @@ import os
 import json
 import shutil
 import distutils.dir_util as du
-import time
 import markdown
 from datetime import datetime
-from jinja2 import Template, FileSystemLoader, Environment
+from jinja2 import FileSystemLoader, Environment
 
-with codecs.open("./settings.json", "r", encoding="utf-8") as f:
-	settings = json.loads(f.read())
+def getsettings():
+	with codecs.open("./settings.json", "r", encoding="utf-8") as f:
+		settings = json.loads(f.read())
+	return settings
 
-tplfolder = settings["tplfolder"]
-baseurl = settings["baseurl"]
-filefolder = settings["filefolder"]
-publish = settings["publish"]
-formats = settings["feeds"]
-
-def jsontransform():
+def jsontransform(settings):
 	"""
 		jsontransform() transforms auphonic input files into post files
 		that can be read by the generate() method
 	"""
 
+	filefolder = settings["filefolder"]
+
+	if not os.path.exists(filefolder):
+		print "[INFO] No media in %s found." % filefolder
+		os.mkdir(filefolder)
+
 	for fn in os.listdir(filefolder):
-		if fn.endswith(".json"):
+		if fn.endswith(".json") and not os.path.exists(os.path.join("./posts/", fn)):
 			with open("{}{}".format(filefolder, fn)) as f:
 				h = json.loads(f.read())
 				o = {}
+				# get all the metadata!
 				o["episode"] = h["metadata"]["track"]
 				o["title"] = h["metadata"]["title"]
 				o["content"] = markdown.markdown(h["metadata"]["summary"])
@@ -44,17 +46,27 @@ def jsontransform():
 				o["duration"] = h["length_timestring"]
 				o["chapters"] = h["chapters"]
 				j = json.dumps(o, sort_keys=True, indent=4, separators=(',', ': '))
+				
+				# write converted file to post storage folder
+				if not os.path.exists("./posts/"):
+					os.mkdir("./posts/")
 				with codecs.open("./posts/{}.json".format(o["episode"]), "a+", encoding="utf-8") as e:
 					e.write(j)
-			os.rename("{}{}".format(filefolder, fn), "{}{}.txt".format(filefolder, fn))
 
-def generate():
+def generate(settings):
 	# mime type mapping
 	mimetypes = {
 		"mp3": "audio/mpeg",
 		"m4a": "audio/x-m4a",
 		"opus": "audio/opus"
 	}
+
+	# settings mapping                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+	tplfolder = settings["tplfolder"]
+	baseurl = settings["baseurl"]
+	filefolder = settings["filefolder"]
+	publish = settings["publish"]
+	formats = settings["feeds"]
 
 	# create output folder
 	if os.path.exists("./tmp_output/"):
@@ -68,6 +80,10 @@ def generate():
 
 	# search content
 	posts = []
+	if not os.path.exists("./posts/"):
+		print "[INFO] No posts found."
+		os.mkdir("./posts/")
+
 	for filename in os.listdir("./posts/"):
 		with codecs.open("./posts/%s" % filename, "r", encoding="utf-8") as f:
 			# read data from json
@@ -112,12 +128,16 @@ def generate():
 			"artwork": settings["artwork_url"]
 		}
 		with open("./tmp_output/{}.xml".format(fmt), "a+") as f:
-			f.write(rssgen.generate(channel=channel, elements=elements))
+			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
 	# copy from temp to production and remove tmp
 	du.copy_tree("./tmp_output", publish)
 	shutil.rmtree("./tmp_output/")
 
+def run():
+	settings = getsettings()
+	jsontransform(settings)
+	generate(settings)
+
 if __name__ == "__main__":
-	jsontransform()
-	generate()
+	run()

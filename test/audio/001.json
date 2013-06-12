@@ -1,0 +1,159 @@
+{
+    "status_string": "Done",
+    "image": null,
+    "creation_time": "2013-06-09T22:01:58.569Z",
+    "chapters": [
+        {
+            "url": "http://example.com/1/",
+            "start": "00:22:46.190",
+            "image": null,
+            "title": "Chapter 1"
+        },
+        {
+            "url": "http://example.com/2/",
+            "start": "01:21:33.010",
+            "image": null,
+            "title": "Chapter 2"
+        },
+        {
+            "url": "http://example.com/3/",
+            "start": "01:17:00.130",
+            "image": null,
+            "title": "Chapter 3"
+        }
+    ],
+    "edit_page": "https://auphonic.com/engine/upload/edit/pJHDH3tWJgg",
+    "channels": 2,
+    "warning_message": "",
+    "samplerate": 44100,
+    "output_files": [
+        {
+            "outgoing_services": [
+                "e5D6FADm5H7J3guutjS4UL"
+            ],
+            "suffix": "",
+            "format": "descr",
+            "checksum": "",
+            "size_string": "",
+            "download_url": "https://auphonic.com/api/download/audio-result/pJHDH3tWJgg/001.json",
+            "ending": "json",
+            "split_on_chapters": false,
+            "filename": "001.json",
+            "bitrate": 0,
+            "mono_mixdown": false,
+            "size": 0
+        },
+        {
+            "outgoing_services": [
+                "e5D6FADm5H7J3guutjS4UL"
+            ],
+            "suffix": "",
+            "format": "aac",
+            "checksum": "950e69613adf281fddb51df8c954ff2d",
+            "size_string": "56.6 MB",
+            "ending": "m4a",
+            "split_on_chapters": false,
+            "filename": "mw001.m4a",
+            "bitrate": 80,
+            "mono_mixdown": true,
+            "size": 59391975
+        },
+        {
+            "outgoing_services": [
+                "e5D6FADm5H7J3guutjS4UL"
+            ],
+            "suffix": "",
+            "format": "opus",
+            "checksum": "439e262ecd616152acf776a5f7d12376",
+            "size_string": "43.1 MB",
+            "download_url": "https://auphonic.com/api/download/audio-result/pJHDH3tWJgg/001.opus",
+            "ending": "opus",
+            "split_on_chapters": false,
+            "filename": "mw001.opus",
+            "bitrate": 64,
+            "mono_mixdown": true,
+            "size": 45152732
+        },
+        {
+            "outgoing_services": [
+                "e5D6FADm5H7J3guutjS4UL"
+            ],
+            "suffix": "",
+            "format": "mp3",
+            "checksum": "59a0d54cbfa2ff9dd974baca6396d1bf",
+            "size_string": "65.6 MB",
+            "download_url": "https://auphonic.com/api/download/audio-result/pJHDH3tWJgg/001.mp3",
+            "ending": "mp3",
+            "split_on_chapters": false,
+            "filename": "mw001.mp3",
+            "bitrate": 96,
+            "mono_mixdown": true,
+            "size": 68769191
+        }
+    ],
+    "uuid": "pJHDH3tWJggWJd9LMbDiNH",
+    "service": null,
+    "warning_status": null,
+    "has_video": false,
+    "error_status": null,
+    "thumbnail": null,
+    "metadata": {
+        "album": "",
+        "publisher": "",
+        "subtitle": "It is just the beginning.",
+        "license": "",
+        "artist": "Artist",
+        "track": "001",
+        "title": "001 Title",
+        "summary": "Summary",
+        "append_chapters": false,
+        "url": "",
+        "license_url": "",
+        "location": {
+            "latitude": null,
+            "longitude": null
+        },
+        "year": "2013",
+        "genre": "",
+        "tags": [
+            ""
+        ]
+    },
+    "status": 3,
+    "input_file": "001.ogg",
+    "status_page": "https://auphonic.com/engine/status/pJHDH3tWJgg",
+    "length_timestring": "01:35:29.914",
+    "multi_input_files": [],
+    "bitrate": 256.0,
+    "output_basename": "001",
+    "outgoing_services": [
+        {
+            "outgoing": true,
+            "incoming": true,
+            "uuid": "e5D6FADm5H7J3guutjS4UL",
+            "error_message": "",
+            "base_url": "",
+            "result_urls": [],
+            "result_page": null,
+            "display_name": "Foo",
+            "type": "sftp",
+            "port": 22,
+            "transfer_success": false
+        }
+    ],
+    "change_time": "2013-06-09T22:55:48.500Z",
+    "error_message": "",
+    "waveform_image": "https://auphonic.com/api/download/audio-result/pJHDH3tWJgg/waveform.png",
+    "length": 5729.91419501134,
+    "algorithms": {
+        "normloudness": true,
+        "loudnesstarget": -16,
+        "denoise": true,
+        "denoiseamount": 0,
+        "hipfilter": true,
+        "leveler": true
+    },
+    "start_allowed": false,
+    "change_allowed": true,
+    "format": "vorbis"
+}

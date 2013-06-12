@@ -5,7 +5,7 @@ from datetime import datetime
 import urllib
 import sys
 
-def generate(channel, elements):
+def generate(channel, elements, settings):
 	namespaces = {
 	"itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
 	"atom": "http://www.w3.org/2005/Atom"
