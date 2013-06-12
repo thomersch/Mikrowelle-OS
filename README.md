@@ -62,6 +62,45 @@ You may as well add chapter marks, they will be automatically processed in put i
 
 The output of auphonic has to be put where the settings.json `filefolder` is configured. The generator will automatically pick up the right files and do the rest.
 
+## Working without Auphonic
+
+You can run _Mikrowelle OS_ without Auphonic as well. In order to do that, you will need to create a json file per episode an put it into your `posts` folder.
+
+The file name doesn't really matter, but your episode order will depend on it.
+
+### Example: Post file
+
+	{
+		"chapters": [
+		    {
+		        "image": null,
+		        "start": "00:22:46.190",
+		        "title": "Chapter 1",
+		        "url": "http://example.com/1/"
+		    },
+		    {
+		        "image": null,
+		        "start": "01:21:33.010",
+		        "title": "Chapter 2",
+		        "url": "http://example.com/2/"
+		    },
+		    {
+		        "image": null,
+		        "start": "01:17:00.130",
+		        "title": "Chapter 3",
+		        "url": "http://example.com/3/"
+		    }
+		],
+		"content": "<p>Summary</p>",
+		"date": "2013-06-09T22:55:48.500Z",
+		"duration": "01:35:29.914",
+		"episode": "001",
+		"filename": "001",
+		"humandate": "09.06.2013",
+		"subtitle": "<p>It is just the beginning.</p>",
+		"title": "001 Title"
+	}
+
 ## My website is ugly!
 
 You can customize your templates at any time. Simply go to the template folder and edit the files. Variables should be rather self explainatory.
