@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 1, 1)
+__version__ = (1, 1, 2)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -8,9 +8,11 @@ import codecs
 import os
 import json
 import shutil
-import distutils.dir_util as du
-import markdown
+import sys
 from datetime import datetime
+import distutils.dir_util as du
+
+import markdown
 from jinja2 import FileSystemLoader, Environment
 
 def getsettings():
@@ -27,7 +29,7 @@ def jsontransform(settings):
 	filefolder = settings["filefolder"]
 
 	if not os.path.exists(filefolder):
-		print "[INFO] No media in %s found." % filefolder
+		print("[INFO] No media in %s found." % filefolder)
 		os.mkdir(filefolder)
 
 	for fn in os.listdir(filefolder):
@@ -81,7 +83,7 @@ def generate(settings):
 	# search content
 	posts = []
 	if not os.path.exists("./posts/"):
-		print "[INFO] No posts found."
+		print("[INFO] No posts found.")
 		os.mkdir("./posts/")
 
 	for filename in os.listdir("./posts/"):
@@ -140,4 +142,7 @@ def run():
 	generate(settings)
 
 if __name__ == "__main__":
-	run()
+	if sys.version_info >= (2,7,0):
+		run()
+	else:
+		print("[ERROR] Your python interpreter version is too old. Required: 2.7")
