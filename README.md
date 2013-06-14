@@ -24,7 +24,7 @@ You won't need a special webserver to serve the application. You can simply thro
 
 ## Is it working?
 
-Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([My Website](http://skowron.biz/files/thomas_skowron.asc), [Twitter](http://twitter.com/thomersch), [ADN](http://alpha.app.net/thomersch/)).
+Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([My Website](http://skowron.biz/impressum/), [Twitter](http://twitter.com/thomersch), [ADN](http://alpha.app.net/thomersch/)).
 
 ## Dependencies
 
