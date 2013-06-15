@@ -36,7 +36,6 @@ Yep, where are using it actively in our podcast: [Mikrowelle](http://mikrowelle.
 	* jQuery
 	* Podlove Web Player
 
-
 ## Installation Instructions
 
 * Install Python dependencies.
@@ -109,6 +108,10 @@ You can customize your templates at any time. Simply go to the template folder a
 If you want to start a new style, I recommend to duplicate the `templates` folder and start editing in the duplicate. Remember to change the `tplfolder` path in `settings.json`.
 
 Adding a stylesheet is nice as well, give it a try.
+
+## Feature requests
+
+Give 'em to me. Create a ticket or contact me.
 
 ## Other Questions?
 
