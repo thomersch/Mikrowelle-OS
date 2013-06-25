@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 1, 2)
+__version__ = (1, 1, 3)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -86,7 +86,7 @@ def generate(settings):
 		print("[INFO] No posts found.")
 		os.mkdir("./posts/")
 
-	for filename in os.listdir("./posts/"):
+	for filename in sorted(os.listdir("./posts/"), reverse=True):
 		with codecs.open("./posts/%s" % filename, "r", encoding="utf-8") as f:
 			# read data from json
 			p = json.loads(f.read())
