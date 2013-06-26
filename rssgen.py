@@ -48,7 +48,6 @@ def generate(channel, elements, settings):
 	fe["it_author"].text = channel["author"]
 
 	fe["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
-	fe["it_logo"].text = channel["artwork"]
 
 	fe["logo"] = etree.Element("logo")
 	fe["logo"].text = channel["artwork"]
