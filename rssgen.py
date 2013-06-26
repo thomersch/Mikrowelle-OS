@@ -5,6 +5,14 @@ from datetime import datetime
 import urllib
 import sys
 
+def _chapters(element, namespaces):
+	xml_chapters = etree.Element("{%s}chapters" % namespaces["psc"], version="1.2")
+
+	for chapter in element["chapters"]:
+		xml_chapters.append(etree.Element("{%s}chapter" % namespaces[u"psc"], start=chapter[u"start"], title=chapter[u"title"], href=chapter[u"url"]))
+
+	return xml_chapters
+
 def generate(channel, elements, settings):
 	namespaces = {
 	"itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
@@ -86,6 +94,9 @@ def generate(channel, elements, settings):
 		encodedurl = urllib.quote(element["link"])
 		encodedtitle = urllib.quote(element["title"].encode('utf8'))
 		ee["flattr"] = etree.Element("{%s}link" % namespaces["atom"], rel="payment", href=settings["flattrlink"].format(encodedurl, encodedtitle), type="text/html")
+
+		if element["chapters"] != []:
+			ee["chapters"] = _chapters(element, namespaces)
 
 		# append item elements
 		for x, etree_element in ee.iteritems():

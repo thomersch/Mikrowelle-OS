@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 1, 3)
+__version__ = (1, 2, 0)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -118,7 +118,8 @@ def generate(settings):
 						"url": "{}{}.{}".format(settings["audio_base_url"], post["filename"], fmt),
 						"length": filesize,
 						"type": mime
-					}
+					},
+					"chapters": post["chapters"]
 				}
 			)
 
