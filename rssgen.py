@@ -14,22 +14,40 @@ def generate(channel, elements, settings):
 
 	r = etree.Element("rss", version="2.0", nsmap=namespaces)
 	r.append(etree.Element("channel"))
-	r[0].append(etree.Element("title"))
-	r[0].append(etree.Element("link"))
-	r[0].append(etree.Element("description"))
-	r[0].append(etree.Element("lastBuildDate"))
-	r[0].append(etree.Element("generator"))
-	r[0].append(etree.Element("author"))
-	r[0].append(etree.Element("{%s}author" % namespaces["itunes"]))
-	r[0].append(etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"]))
-	r[0].append(etree.Element("logo"))
-	r[0][0].text = channel["title"]
-	r[0][1].text = channel["link"]
-	r[0][2].text = channel["description"]
-	r[0][3].text = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
-	r[0][4].text = "Mikrowelle OS"
-	r[0][5].text = r[0][6].text = channel["author"]
-	r[0][8].text = channel["artwork"]
+
+	# feed data
+	fd = {}
+
+	fd["title"] = etree.Element("title")
+	fd["title"].text = channel["title"]
+
+	fd["link"] = etree.Element("link")
+	fd["link"].text = channel["link"]
+	
+	fd["description"] = etree.Element("description")
+	fd["description"].text = channel["description"]
+
+	fd["lastBuildDate"] = etree.Element("lastBuildDate")
+	fd["lastBuildDate"].text = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
+
+	fd["generator"] = etree.Element("generator")
+	fd["generator"].text = "Mikrowelle OS"
+
+	fd["author"] = etree.Element("author")
+	fd["author"].text = channel["author"]
+
+	fd["it_author"] = etree.Element("{%s}author" % namespaces["itunes"])
+	fd["it_author"].text = channel["author"]
+
+	fd["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
+	fd["it_logo"].text = channel["artwork"]
+
+	fd["logo"] = etree.Element("logo")
+	fd["logo"].text = channel["artwork"]
+
+	# append all items (feed data)
+	for x, etree_element in fd.iteritems():
+		r[0].append(etree_element)
 
 	# podcast episodes ("items" in rss terms)
 	for element in elements:
