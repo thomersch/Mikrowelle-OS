@@ -13,78 +13,87 @@ def generate(channel, elements, settings):
 	}
 
 	r = etree.Element("rss", version="2.0", nsmap=namespaces)
-	r.append(etree.Element("channel"))
+	chan = etree.Element("channel")
 
-	# feed data
-	fd = {}
+	# feed elements
+	fe = {}
 
-	fd["title"] = etree.Element("title")
-	fd["title"].text = channel["title"]
+	fe["title"] = etree.Element("title")
+	fe["title"].text = channel["title"]
 
-	fd["link"] = etree.Element("link")
-	fd["link"].text = channel["link"]
+	fe["link"] = etree.Element("link")
+	fe["link"].text = channel["link"]
 	
-	fd["description"] = etree.Element("description")
-	fd["description"].text = channel["description"]
+	fe["description"] = etree.Element("description")
+	fe["description"].text = channel["description"]
 
-	fd["lastBuildDate"] = etree.Element("lastBuildDate")
-	fd["lastBuildDate"].text = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
+	fe["lastBuildDate"] = etree.Element("lastBuildDate")
+	fe["lastBuildDate"].text = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
 
-	fd["generator"] = etree.Element("generator")
-	fd["generator"].text = "Mikrowelle OS"
+	fe["generator"] = etree.Element("generator")
+	fe["generator"].text = "Mikrowelle OS"
 
-	fd["author"] = etree.Element("author")
-	fd["author"].text = channel["author"]
+	fe["author"] = etree.Element("author")
+	fe["author"].text = channel["author"]
 
-	fd["it_author"] = etree.Element("{%s}author" % namespaces["itunes"])
-	fd["it_author"].text = channel["author"]
+	fe["it_author"] = etree.Element("{%s}author" % namespaces["itunes"])
+	fe["it_author"].text = channel["author"]
 
-	fd["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
-	fd["it_logo"].text = channel["artwork"]
+	fe["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
+	fe["it_logo"].text = channel["artwork"]
 
-	fd["logo"] = etree.Element("logo")
-	fd["logo"].text = channel["artwork"]
+	fe["logo"] = etree.Element("logo")
+	fe["logo"].text = channel["artwork"]
 
 	# append all items (feed data)
-	for x, etree_element in fd.iteritems():
-		r[0].append(etree_element)
+	for x, etree_element in fe.iteritems():
+		chan.append(etree_element)
 
 	# podcast episodes ("items" in rss terms)
 	for element in elements:
-		r[0].append(etree.Element("item"))
-		curitem = r[0][len(r[0])-1]
-		curitem.append(etree.Element("title"))
-		curitem[0].text = element["title"]
+		# episode elements
+		ee = {}
+		curitem = etree.Element("item")
 
-		curitem.append(etree.Element("link"))
-		curitem[1].text = element["link"]
+		ee["title"] = etree.Element("title")
+		ee["title"].text = element["title"]
 
-		curitem.append(etree.Element("description"))
-		curitem[2].text = etree.CDATA(element["description"])
+		ee["link"] = etree.Element("link")
+		ee["link"].text = element["link"]
 
-		curitem.append(etree.Element("pubDate"))
+		ee["description"] = etree.Element("description")
+		ee["description"].text = etree.CDATA(element["description"])
+
+		ee["guid"] = etree.Element("guid", isPermaLink="false")
+		ee["guid"].text = element["guid"]
+
+		ee["pubdate"] = etree.Element("pubDate")
 		if isinstance(element["pubdate"], str) or isinstance(element["pubdate"], unicode):
-			curitem[3].text = element["pubdate"]
+			ee["pubdate"].text = element["pubdate"]
 		else:
-			curitem[3].text = element["pubdate"].strftime("%a, %d %b %Y %H:%M:%S +0000")
-
-
-		curitem.append(etree.Element("guid", isPermaLink="false"))
-		curitem[4].text = element["guid"]
+			ee["pubdate"].text = element["pubdate"].strftime("%a, %d %b %Y %H:%M:%S +0000")
 
 		if "artwork" not in element:
-			curitem.append(etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"]))
+			# take image/artwork from channel
+			ee["it_image"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
 		else:
-			curitem.append(etree.Element("{%s}image" % namespaces["itunes"], href=element["artwork"]))
+			ee["it_image"] = etree.Element("{%s}image" % namespaces["itunes"], href=element["artwork"])
 
 		if isinstance(element["enclosure"]["length"], int):
 			element["enclosure"]["length"] = str(element["enclosure"]["length"])
-		curitem.append(etree.Element("enclosure", url=element["enclosure"]["url"], length=element["enclosure"]["length"], type=element["enclosure"]["type"]))
+		ee["enclosure"] = etree.Element("enclosure", url=element["enclosure"]["url"], length=element["enclosure"]["length"], type=element["enclosure"]["type"])
 
 		encodedurl = urllib.quote(element["link"])
 		encodedtitle = urllib.quote(element["title"].encode('utf8'))
-		curitem.append(etree.Element("{%s}link" % namespaces["atom"], rel="payment", href=settings["flattrlink"].format(encodedurl, encodedtitle), type="text/html"))
+		ee["flattr"] = etree.Element("{%s}link" % namespaces["atom"], rel="payment", href=settings["flattrlink"].format(encodedurl, encodedtitle), type="text/html")
 
+		# append item elements
+		for x, etree_element in ee.iteritems():
+			curitem.append(etree_element)
 
+		# append item to channel
+		chan.append(curitem)
 
-	return(etree.tostring(r, pretty_print=True, encoding="utf-8"))
+	r.append(chan)
+
+	return(etree.tostring(r, xml_declaration=True, pretty_print=True, encoding="utf-8"))
