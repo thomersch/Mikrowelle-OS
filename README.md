@@ -15,6 +15,7 @@ Tested on Python 2.7. Will not work under Python 2.6, please update in this case
 	* Podlove Web Player included
 	* Chapter mark support
 * Auphonic support
+* Podlove Simple Chapters
 * Suitable for heavy load situations
 	* no CGI/PHP bloat
 
