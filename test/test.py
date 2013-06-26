@@ -35,9 +35,7 @@ def test():
 		if p not in os.listdir("./pub/"):
 			print "[ERROR] Missing %s" % p
 
-	# remove tmp
 	os.chdir("../")
-	shutil.rmtree("./tmp/")
 
 
 if __name__ == "__main__":
