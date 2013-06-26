@@ -2,26 +2,7 @@
     "status_string": "Done",
     "image": null,
     "creation_time": "2013-06-09T22:01:58.569Z",
-    "chapters": [
-        {
-            "url": "http://example.com/1/",
-            "start": "00:22:46.190",
-            "image": null,
-            "title": "Chapter 1"
-        },
-        {
-            "url": "",
-            "start": "01:21:33.010",
-            "image": null,
-            "title": "Chapter 2"
-        },
-        {
-            "url": "http://example.com/3/",
-            "start": "01:17:00.130",
-            "image": null,
-            "title": "Chapter 3"
-        }
-    ],
+    "chapters": [],
     "edit_page": "https://auphonic.com/engine/upload/edit/pJHDH3tWJgg",
     "channels": 2,
     "warning_message": "",
@@ -103,8 +84,8 @@
         "subtitle": "It is just the beginning.",
         "license": "",
         "artist": "Artist",
-        "track": "001",
-        "title": "001 Title",
+        "track": "002",
+        "title": "002 Title 2",
         "summary": "Summary",
         "append_chapters": false,
         "url": "",
