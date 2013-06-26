@@ -8,10 +8,10 @@ import sys
 def generate(channel, elements, settings):
 	namespaces = {
 	"itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
-	"atom": "http://www.w3.org/2005/Atom"
+	"atom": "http://www.w3.org/2005/Atom",
+	"psc": "http://podlove.org/simple-chapters"
 	}
 
-	n = etree.register_namespace("itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd")
 	r = etree.Element("rss", version="2.0", nsmap=namespaces)
 	r.append(etree.Element("channel"))
 	r[0].append(etree.Element("title"))
@@ -31,6 +31,7 @@ def generate(channel, elements, settings):
 	r[0][5].text = r[0][6].text = channel["author"]
 	r[0][8].text = channel["artwork"]
 
+	# podcast episodes ("items" in rss terms)
 	for element in elements:
 		r[0].append(etree.Element("item"))
 		curitem = r[0][len(r[0])-1]
@@ -65,5 +66,7 @@ def generate(channel, elements, settings):
 		encodedurl = urllib.quote(element["link"])
 		encodedtitle = urllib.quote(element["title"].encode('utf8'))
 		curitem.append(etree.Element("{%s}link" % namespaces["atom"], rel="payment", href=settings["flattrlink"].format(encodedurl, encodedtitle), type="text/html"))
+
+
 
 	return(etree.tostring(r, pretty_print=True, encoding="utf-8"))
