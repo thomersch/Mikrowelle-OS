@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<!--<link rel="stylesheet" href="./style.css" />-->
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script>
+			var client_id = "172f6731592239a63c506e1197032a";
+			var location_url = window.location.origin + window.location.pathname
+
+			function getParameterByName(name) {
+				/* http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values */
+				name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+				var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+				results = regex.exec(location.search);
+				return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+
+			function setAuphonicUrl() {
+				var current_url = encodeURIComponent(location_url)
+				var url = "https://auphonic.com/oauth2/authorize/?client_id="+client_id+"&amp;redirect_uri="+current_url+"&amp;response_type=code"
+				$("#connect_auphonic").attr("href", url);
+
+				console.log(url);
+			}
+
+			function getAccessToken(grantcode) {
+				var ajax_conf = {
+					url: "https://auphonic.com/oauth2/token/",
+					type: "GET",
+					data: {
+						client_id: client_id,
+						client_secret: "d45962fc7eb266f849cc2015f74cc3",
+						redirect_uri: location_url,
+						grant_type: "authorization_code",
+						code: grantcode
+					},
+					dataType: "jsonp",
+					cache: false
+				}
+
+				console.log(ajax_conf);
+
+				$.ajax(ajax_conf).always(function(data) {
+					console.log(data);
+				})
+
+			}
+			$(document).ready(function (){
+				if(!getParameterByName("code") == "") {
+					localStorage.setItem("auphonic_token", getParameterByName("code"))
+				}
+
+				setAuphonicUrl();
+
+				if(localStorage.getItem("auphonic_token") != "") {
+					getAccessToken(localStorage.getItem("auphonic_token"))
+				}
+			})
+			
+		</script>
+	</head>
+
+	<body>
+		<form>
+
+			<button>
+				<a id="connect_auphonic">Mit Auphonic verbinden</a>
+			</button>
+			
+			<br />
+
+			Audio file: <input type="file" id="mediafile" /><br />
+			Chapters file: <input type="file" id="chaptersfile" />
+
+
+		</form>
+	</body>
+
+</html>
