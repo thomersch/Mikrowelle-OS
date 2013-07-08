@@ -9,7 +9,10 @@ def _chapters(element, namespaces):
 	xml_chapters = etree.Element("{%s}chapters" % namespaces["psc"], version="1.2")
 
 	for chapter in element["chapters"]:
-		xml_chapters.append(etree.Element("{%s}chapter" % namespaces[u"psc"], start=chapter[u"start"], title=chapter[u"title"], href=chapter[u"url"]))
+		xml_chapters.append(
+			etree.Element("{%s}chapter" % namespaces[u"psc"], start=chapter[u"start"],
+			title=chapter[u"title"], href=chapter[u"url"])
+		)
 
 	return xml_chapters
 
