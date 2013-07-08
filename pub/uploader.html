@@ -6,7 +6,7 @@
 		<!--<link rel="stylesheet" href="./style.css" />-->
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 		<script>
-			var client_id = "172f6731592239a63c506e1197032a";
+			var client_id = "172f6731592239a63c506e1197032a"
 			var location_url = window.location.origin + window.location.pathname
 
 			function getParameterByName(name) {
@@ -20,15 +20,13 @@
 			function setAuphonicUrl() {
 				var current_url = encodeURIComponent(location_url)
 				var url = "https://auphonic.com/oauth2/authorize/?client_id="+client_id+"&amp;redirect_uri="+current_url+"&amp;response_type=code"
-				$("#connect_auphonic").attr("href", url);
-
-				console.log(url);
+				$("#connect_auphonic").attr("href", url)
 			}
 
 			function getAccessToken(grantcode) {
 				var ajax_conf = {
 					url: "https://auphonic.com/oauth2/token/",
-					type: "GET",
+					type: "POST",
 					data: {
 						client_id: client_id,
 						client_secret: "d45962fc7eb266f849cc2015f74cc3",
@@ -36,15 +34,19 @@
 						grant_type: "authorization_code",
 						code: grantcode
 					},
-					dataType: "jsonp",
 					cache: false
 				}
 
-				console.log(ajax_conf);
+				console.log(ajax_conf)
 
 				$.ajax(ajax_conf).always(function(data) {
-					console.log(data);
+					if(data.access_token !== undefined) {
+						localStorage.setItem("auphonic_accesstoken", data.access_token)
+						console.log(localStorage.getItem("auphonic_accesstoken"))
+					}
 				})
+
+
 
 			}
 			$(document).ready(function (){
@@ -52,11 +54,13 @@
 					localStorage.setItem("auphonic_token", getParameterByName("code"))
 				}
 
-				setAuphonicUrl();
+				setAuphonicUrl()
 
-				if(localStorage.getItem("auphonic_token") != "") {
+				if(localStorage.getItem("auphonic_token") != "" && localStorage.getItem("auphonic_accesstoken") == "") {
 					getAccessToken(localStorage.getItem("auphonic_token"))
 				}
+
+
 			})
 			
 		</script>
