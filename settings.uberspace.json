@@ -14,6 +14,6 @@
     "feed_description": "Feedbeschreibung/Podcastbeschreibung",
     "author": "Podcastautor",
     "artwork_url": "http://DEINNAME.SERVER.uberspace.de/logo.png",
-    "audio_base_url": "http://DEINNAME.SERVER.uberspace/audio/",
+    "audio_base_url": "http://DEINNAME.SERVER.uberspace.de/audio/",
     "flattrlink": "https://flattr.com/submit/auto?url={}&title={}&user_id=FLATTRNAME&language=de_DE&category=audio"
 }
