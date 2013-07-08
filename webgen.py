@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 2, 0)
+__version__ = (1, 2, 1)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -20,6 +20,32 @@ def getsettings():
 		settings = json.loads(f.read())
 	return settings
 
+
+def _writeJsonData(filefolder, fn):
+	with open("{}{}".format(filefolder, fn)) as f:
+		h = json.loads(f.read())
+		o = {}
+		# get all the metadata!
+		o["episode"] = h["metadata"]["track"]
+		o["title"] = h["metadata"]["title"]
+		o["content"] = markdown.markdown(h["metadata"]["summary"])
+		o["subtitle"] = markdown.markdown(h["metadata"]["subtitle"])
+		o["date"] = h["change_time"]
+		o["humandate"] = datetime.strptime(
+			o["date"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y")
+		o["filename"] = h["output_basename"]
+		o["duration"] = h["length_timestring"]
+		o["chapters"] = h["chapters"]
+		j = json.dumps(o, sort_keys=True, indent=4, separators=(',', ': '))
+		
+		# write converted file to post storage folder
+		if not os.path.exists("./posts/"):
+			os.mkdir("./posts/")
+		episode_file_name = "./posts/{}.json".format(o["episode"])
+		with codecs.open(episode_file_name, "a+", encoding="utf-8") as e:
+			e.write(j)
+
+
 def jsontransform(settings):
 	"""
 		jsontransform() transforms auphonic input files into post files
@@ -34,28 +60,13 @@ def jsontransform(settings):
 
 	for fn in os.listdir(filefolder):
 		if fn.endswith(".json") and not os.path.exists(os.path.join("./posts/", fn)):
-			with open("{}{}".format(filefolder, fn)) as f:
-				h = json.loads(f.read())
-				o = {}
-				# get all the metadata!
-				o["episode"] = h["metadata"]["track"]
-				o["title"] = h["metadata"]["title"]
-				o["content"] = markdown.markdown(h["metadata"]["summary"])
-				o["subtitle"] = markdown.markdown(h["metadata"]["subtitle"])
-				o["date"] = h["change_time"]
-				o["humandate"] = datetime.strptime(o["date"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y")
-				o["filename"] = h["output_basename"]
-				o["duration"] = h["length_timestring"]
-				o["chapters"] = h["chapters"]
-				j = json.dumps(o, sort_keys=True, indent=4, separators=(',', ': '))
-				
-				# write converted file to post storage folder
-				if not os.path.exists("./posts/"):
-					os.mkdir("./posts/")
-				with codecs.open("./posts/{}.json".format(o["episode"]), "a+", encoding="utf-8") as e:
-					e.write(j)
+			_writeJsonData(filefolder, fn)
 
-def generate(settings):
+
+def _getElements(posts, settings, format):
+	filefolder = settings["filefolder"]
+	baseurl = settings["baseurl"]
+
 	# mime type mapping
 	mimetypes = {
 		"mp3": "audio/mpeg",
@@ -63,10 +74,35 @@ def generate(settings):
 		"opus": "audio/opus"
 	}
 
-	# settings mapping                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+	elements = []
+	for post in posts:
+		filesize = os.path.getsize("{}{}.{}".format(filefolder, post["filename"], format))
+		mime = mimetypes[format]
+
+		guid = "{}{}.html.{}".format(baseurl, post["episode"], post["date"])
+
+		elements.append(
+			{
+				"title": post["title"],
+				"link": "{}{}.html".format(baseurl, post["episode"]),
+				"description": post["content"],
+				"guid": guid,
+				"pubdate": datetime.strptime(post["date"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+				"enclosure": {
+					"url": "{}{}.{}".format(settings["audio_base_url"], post["filename"], format),
+					"length": filesize,
+					"type": mime
+				},
+				"chapters": post["chapters"]
+			}
+		)
+
+	return elements
+
+
+def generate(settings):
+	# settings mapping
 	tplfolder = settings["tplfolder"]
-	baseurl = settings["baseurl"]
-	filefolder = settings["filefolder"]
 	publish = settings["publish"]
 	formats = settings["feeds"]
 
@@ -102,26 +138,7 @@ def generate(settings):
 
 	# generate feed_description
 	for fmt in formats:
-		elements = []
-		for post in posts:
-			filesize = os.path.getsize("{}{}.{}".format(filefolder, post["filename"], fmt))
-			mime = mimetypes[fmt]
-
-			elements.append(
-				{
-					"title": post["title"],
-					"link": "{}{}.html".format(baseurl, post["episode"]),
-					"description": post["content"],
-					"guid": "{}{}.html.{}".format(baseurl, post["episode"], post["date"]),
-					"pubdate": datetime.strptime(post["date"], "%Y-%m-%dT%H:%M:%S.%fZ"),
-					"enclosure": {
-						"url": "{}{}.{}".format(settings["audio_base_url"], post["filename"], fmt),
-						"length": filesize,
-						"type": mime
-					},
-					"chapters": post["chapters"]
-				}
-			)
+		elements = _getElements(posts, settings, fmt)
 
 		channel = {
 			"title": settings["feed_title"].format(fmt),
@@ -137,13 +154,15 @@ def generate(settings):
 	du.copy_tree("./tmp_output", publish)
 	shutil.rmtree("./tmp_output/")
 
+
 def run():
 	settings = getsettings()
 	jsontransform(settings)
 	generate(settings)
 
+
 if __name__ == "__main__":
-	if sys.version_info >= (2,7,0):
+	if sys.version_info >= (2, 7, 0):
 		run()
 	else:
 		print("[ERROR] Your python interpreter version is too old. Required: 2.7")
