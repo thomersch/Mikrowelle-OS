@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 2, 1)
+__version__ = (1, 2, 2)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -60,6 +60,7 @@ def jsontransform(settings):
 
 	for fn in os.listdir(filefolder):
 		if fn.endswith(".json") and not os.path.exists(os.path.join("./posts/", fn)):
+			print os.path.join("./posts/", fn)
 			_writeJsonData(filefolder, fn)
 
 
@@ -130,11 +131,11 @@ def generate(settings):
 			# write individual pages for posts
 			with codecs.open("./tmp_output/%s.html" % p["episode"],
 				"a+", encoding="utf-8") as w:
-				w.write(single_template.render(post=p, settings=settings, feeds=formats))
+				w.write(single_template.render(post=p, settings=settings, feeds=formats, index_page=False))
 
 	# write index.html with all posts
 	with codecs.open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
-		f.write(index_template.render(posts=posts, settings=settings, feeds=formats))
+		f.write(index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True))
 
 	# generate feed_description
 	for fmt in formats:
