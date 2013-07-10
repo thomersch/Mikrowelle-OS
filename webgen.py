@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 2, 2)
+__version__ = (1, 2, 3)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -41,7 +41,7 @@ def _writeJsonData(filefolder, fn):
 		# write converted file to post storage folder
 		if not os.path.exists("./posts/"):
 			os.mkdir("./posts/")
-		episode_file_name = "./posts/{}.json".format(o["episode"])
+		episode_file_name = "./posts/{}".format(fn)
 		with codecs.open(episode_file_name, "a+", encoding="utf-8") as e:
 			e.write(j)
 
@@ -60,7 +60,6 @@ def jsontransform(settings):
 
 	for fn in os.listdir(filefolder):
 		if fn.endswith(".json") and not os.path.exists(os.path.join("./posts/", fn)):
-			print os.path.join("./posts/", fn)
 			_writeJsonData(filefolder, fn)
 
 
