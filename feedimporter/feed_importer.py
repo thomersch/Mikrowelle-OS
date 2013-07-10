@@ -16,21 +16,25 @@ def _getChannelInformation(xml_tree):
 	pass
 
 
-def _processOneEpisode(item, json_path):
+def _processOneEpisode(item, json_path, episode_number):
 	pubDate = item.find(".//pubDate").text
 	date = strftime("%Y-%m-%dT%H:%M:%S.000Z", parsedate(pubDate))
+	filename = os.path.splitext(os.path.split(item.find(".//enclosure").attrib["url"])[1])[0]
 
 	o = {
 		"title": item.find(".//title").text,
 		"description": item.find(".//description").text,
 		"guid": item.find(".//guid"),
 		"pubDate": pubDate,
-		"date": date
+		"date": date,
+		"filename": filename,
+		"episode": episode_number,
 	}
 
 	print o["title"]
 	print o["pubDate"]
 	print o["date"]
+	print o["filename"]
 	print "+++++"
 
 
@@ -42,7 +46,7 @@ def _processEpisodes(items):
 	for number, item in enumerate(reversed(items)):
 		episode_json_path = os.path.join(post_path, "%s.json" % (number+1))
 		print episode_json_path
-		_processOneEpisode(item, episode_json_path)
+		_processOneEpisode(item, episode_json_path, episode_number)
 
 
 def _getElements(xml_tree):
