@@ -2,8 +2,12 @@
 
 from lxml import etree
 from datetime import datetime
-import urllib
 import sys
+
+if sys.version_info < (3, 0, 0):
+	from urllib import quote as urlquote
+else:
+	from urllib.parse import quote as urlquote
 
 def _chapters(element, namespaces):
 	xml_chapters = etree.Element("{%s}chapters" % namespaces["psc"], version="1.2")
@@ -56,7 +60,7 @@ def generate(channel, elements, settings):
 	fe["logo"].text = channel["artwork"]
 
 	# append all items (feed data)
-	for x, etree_element in fe.iteritems():
+	for x, etree_element in fe.items():
 		chan.append(etree_element)
 
 	# podcast episodes ("items" in rss terms)
@@ -78,10 +82,10 @@ def generate(channel, elements, settings):
 		ee["guid"].text = element["guid"]
 
 		ee["pubdate"] = etree.Element("pubDate")
-		if isinstance(element["pubdate"], str) or isinstance(element["pubdate"], unicode):
-			ee["pubdate"].text = element["pubdate"]
-		else:
+		if isinstance(element["pubdate"], datetime):
 			ee["pubdate"].text = element["pubdate"].strftime("%a, %d %b %Y %H:%M:%S +0000")
+		else:
+			ee["pubdate"].text = element["pubdate"]
 
 		if "artwork" not in element:
 			# take image/artwork from channel
@@ -93,15 +97,15 @@ def generate(channel, elements, settings):
 			element["enclosure"]["length"] = str(element["enclosure"]["length"])
 		ee["enclosure"] = etree.Element("enclosure", url=element["enclosure"]["url"], length=element["enclosure"]["length"], type=element["enclosure"]["type"])
 
-		encodedurl = urllib.quote(element["link"])
-		encodedtitle = urllib.quote(element["title"].encode('utf8'))
+		encodedurl = urlquote(element["link"])
+		encodedtitle = urlquote(element["title"].encode('utf8'))
 		ee["flattr"] = etree.Element("{%s}link" % namespaces["atom"], rel="payment", href=settings["flattrlink"].format(encodedurl, encodedtitle), type="text/html")
 
 		if element["chapters"] != []:
 			ee["chapters"] = _chapters(element, namespaces)
 
 		# append item elements
-		for x, etree_element in ee.iteritems():
+		for x, etree_element in ee.items():
 			curitem.append(etree_element)
 
 		# append item to channel

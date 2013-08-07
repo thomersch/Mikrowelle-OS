@@ -150,8 +150,15 @@ def generate(settings):
 
 
 	# write index.html with all posts
-	with codecs.open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
-		f.write(index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True))
+	index_file_content = index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True)
+
+	if sys.version_info < (3, 0, 0):
+		with codecs.open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
+			f.write(index_file_content)
+	else:
+		with open("./tmp_output/index.html", "a+") as f:
+			f.write(index_file_content)
+
 
 	# generate feed_description
 	for fmt in formats:
@@ -164,7 +171,7 @@ def generate(settings):
 			"author": settings["author"],
 			"artwork": settings["artwork_url"]
 		}
-		with open("./tmp_output/{}.xml".format(fmt), "a+") as f:
+		with open("./tmp_output/{}.xml".format(fmt), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
 	# copy from temp to production and remove tmp

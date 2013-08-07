@@ -30,11 +30,11 @@ def test():
 	# check if the files are there
 	pub = ["001.html", "index.html", "m4a.xml", "mp3.xml", "opus.xml"]
 	if not os.path.exists("./posts/001.json"):
-		print "[ERROR] No post created."
+		print("[ERROR] No post created.")
 
 	for p in pub:
 		if p not in os.listdir("./pub/"):
-			print "[ERROR] Missing %s" % p
+			print("[ERROR] Missing %s" % p)
 
 	os.chdir("../")
 
