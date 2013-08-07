@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 2, 3)
+__version__ = (1, 2, 4)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
@@ -78,13 +78,13 @@ def _getElements(posts, settings, format):
 	for post in posts:
 		filesize = os.path.getsize("{}{}.{}".format(filefolder, post["filename"], format))
 		mime = mimetypes[format]
-
+		episode_link = "{}{}.html".format(baseurl, post["episode"])
 		guid = "{}{}.html.{}".format(baseurl, post["episode"], post["date"])
 
 		elements.append(
 			{
 				"title": post["title"],
-				"link": "{}{}.html".format(baseurl, post["episode"]),
+				"link": episode_link,
 				"description": post["content"],
 				"guid": guid,
 				"pubdate": datetime.strptime(post["date"], "%Y-%m-%dT%H:%M:%S.%fZ"),
