@@ -13,7 +13,6 @@ def test():
 
 	# copy mikrowelle os system files
 	shutil.copy("../webgen.py", "./tmp/")
-	shutil.copy("../rssgen.py", "./tmp/")
 	shutil.copy("../settings.json", "./tmp/")
 	shutil.copytree("../templates/", "./tmp/templates/")
 	shutil.copytree("../util/", "./tmp/util/")

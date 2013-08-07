@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 2, 4)
+__version__ = (1, 2, 5)
 __author__ = "Thomas Skowron (thomersch)"
 
-import rssgen
+import util.rssgen as rssgen
 from util.progressbar import AnimatedProgressBar
 
 import codecs
