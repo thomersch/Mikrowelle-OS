@@ -16,6 +16,7 @@ def test():
 	shutil.copy("../rssgen.py", "./tmp/")
 	shutil.copy("../settings.json", "./tmp/")
 	shutil.copytree("../templates/", "./tmp/templates/")
+	shutil.copytree("../util/", "./tmp/util/")
 	shutil.copytree("./audio/", "./tmp/audio/")
 
 	# changing to tmp directory, simulating working environment
