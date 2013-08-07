@@ -4,6 +4,8 @@ __version__ = (1, 2, 4)
 __author__ = "Thomas Skowron (thomersch)"
 
 import rssgen
+from util.progressbar import AnimatedProgressBar
+
 import codecs
 import os
 import json
@@ -11,7 +13,6 @@ import shutil
 import sys
 from datetime import datetime
 import distutils.dir_util as du
-
 import markdown
 from jinja2 import FileSystemLoader, Environment
 
@@ -46,21 +47,12 @@ def _writeJsonData(filefolder, fn):
 			e.write(j)
 
 
-def jsontransform(settings):
-	"""
-		jsontransform() transforms auphonic input files into post files
-		that can be read by the generate() method
-	"""
-
-	filefolder = settings["filefolder"]
-
-	if not os.path.exists(filefolder):
-		print("[INFO] No media in %s found." % filefolder)
-		os.mkdir(filefolder)
-
-	for fn in os.listdir(filefolder):
+def _getJsonFileList(filefolder):
+	def filterFile(fn):
 		if fn.endswith(".json") and not os.path.exists(os.path.join("./posts/", fn)):
-			_writeJsonData(filefolder, fn)
+			return True
+		
+	return [fn for fn in os.listdir(filefolder) if filterFile(fn)]
 
 
 def _getElements(posts, settings, format):
@@ -100,6 +92,28 @@ def _getElements(posts, settings, format):
 	return elements
 
 
+def jsontransform(settings):
+	"""
+		jsontransform() transforms auphonic input files into post files
+		that can be read by the generate() method
+	"""
+
+	filefolder = settings["filefolder"]
+
+	if not os.path.exists(filefolder):
+		print("[INFO] No media in %s found." % filefolder)
+		os.mkdir(filefolder)
+
+	filelist = _getJsonFileList(filefolder)
+	global progress
+	progress = AnimatedProgressBar(end=len(filelist)*2, width=60)
+
+	for fn in filelist:
+		_writeJsonData(filefolder, fn)
+		progress + 1
+		progress.show_progress()
+
+
 def generate(settings):
 	# settings mapping
 	tplfolder = settings["tplfolder"]
@@ -131,6 +145,9 @@ def generate(settings):
 			with codecs.open("./tmp_output/%s.html" % p["episode"],
 				"a+", encoding="utf-8") as w:
 				w.write(single_template.render(post=p, settings=settings, feeds=formats, index_page=False))
+				progress + 1
+				progress.show_progress()
+
 
 	# write index.html with all posts
 	with codecs.open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
@@ -163,6 +180,7 @@ def run():
 
 if __name__ == "__main__":
 	if sys.version_info >= (2, 7, 0):
+		print("Running Mikrowelle OS {}.{}.{}".format(__version__(0), __version__(1), __version__(2)))
 		run()
 	else:
 		print("[ERROR] Your python interpreter version is too old. Required: 2.7")
