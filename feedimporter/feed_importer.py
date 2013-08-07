@@ -3,6 +3,7 @@ import sys
 import os
 import urllib
 import shutil
+import json
 from time import strftime, mktime
 from email.utils import parsedate
 from lxml import etree
@@ -24,7 +25,7 @@ def _processOneEpisode(item, json_path, episode_number):
 	o = {
 		"title": item.find(".//title").text,
 		"description": item.find(".//description").text,
-		"guid": item.find(".//guid"),
+		"guid": item.find(".//guid").text,
 		"pubDate": pubDate,
 		"date": date,
 		"filename": filename,
@@ -35,7 +36,11 @@ def _processOneEpisode(item, json_path, episode_number):
 	print o["pubDate"]
 	print o["date"]
 	print o["filename"]
+	print o["guid"]
 	print "+++++"
+
+	with open(os.path.join(output_path, "posts", "%03d.json" % episode_number), "w+") as post_file:
+		post_file.write(json.dumps(o, sort_keys=True, indent=4, separators=(',', ': ')))
 
 
 def _processEpisodes(items):
@@ -46,7 +51,7 @@ def _processEpisodes(items):
 	for number, item in enumerate(reversed(items)):
 		episode_json_path = os.path.join(post_path, "%s.json" % (number+1))
 		print episode_json_path
-		_processOneEpisode(item, episode_json_path, episode_number)
+		_processOneEpisode(item, episode_json_path, number)
 
 
 def _getElements(xml_tree):
