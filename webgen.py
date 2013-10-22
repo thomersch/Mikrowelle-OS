@@ -187,7 +187,7 @@ def run():
 
 if __name__ == "__main__":
 	if sys.version_info >= (2, 7, 0):
-		print("Running Mikrowelle OS {}.{}.{}".format(__version__(0), __version__(1), __version__(2)))
+		print("Running Mikrowelle OS {}.{}.{}".format(__version__[0], __version__[1], __version__[2]))
 		run()
 	else:
 		print("[ERROR] Your python interpreter version is too old. Required: 2.7")
