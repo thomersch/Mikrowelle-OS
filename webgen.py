@@ -6,18 +6,21 @@ __author__ = "Thomas Skowron (thomersch)"
 import util.rssgen as rssgen
 from util.progressbar import AnimatedProgressBar
 
-import codecs
+import sys
 import os
 import json
 import shutil
-import sys
 from datetime import datetime
 import distutils.dir_util as du
+
 import markdown
 from jinja2 import FileSystemLoader, Environment
 
+if sys.version_info < (3, 0, 0):
+	from codecs import open
+
 def getsettings():
-	with codecs.open("./settings.json", "r", encoding="utf-8") as f:
+	with open("./settings.json", "r", encoding="utf-8") as f:
 		settings = json.loads(f.read())
 	return settings
 
@@ -43,7 +46,7 @@ def _writeJsonData(filefolder, fn):
 		if not os.path.exists("./posts/"):
 			os.mkdir("./posts/")
 		episode_file_name = "./posts/{}".format(fn)
-		with codecs.open(episode_file_name, "a+", encoding="utf-8") as e:
+		with open(episode_file_name, "a+", encoding="utf-8") as e:
 			e.write(j)
 
 
@@ -142,12 +145,12 @@ def generate(settings):
 		os.mkdir("./posts/")
 
 	for filename in sorted(os.listdir("./posts/"), reverse=True):
-		with codecs.open("./posts/%s" % filename, "r", encoding="utf-8") as f:
+		with open("./posts/%s" % filename, "r", encoding="utf-8") as f:
 			# read data from json
 			p = json.loads(f.read())
 			posts.append(p)
 			# write individual pages for posts
-			with codecs.open("./tmp_output/%s.html" % p["episode"],
+			with open("./tmp_output/%s.html" % p["episode"],
 				"a+", encoding="utf-8") as w:
 				w.write(single_template.render(post=p, settings=settings, feeds=formats, index_page=False))
 				progress + 1
@@ -157,12 +160,8 @@ def generate(settings):
 	# write index.html with all posts
 	index_file_content = index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True)
 
-	if sys.version_info < (3, 0, 0):
-		with codecs.open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
-			f.write(index_file_content)
-	else:
-		with open("./tmp_output/index.html", "a+") as f:
-			f.write(index_file_content)
+	with open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
+		f.write(index_file_content)
 
 
 	# generate feed_description
