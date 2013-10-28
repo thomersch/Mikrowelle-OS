@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from lxml import etree
+import xml.etree.ElementTree as etree
 from datetime import datetime
 import sys
 

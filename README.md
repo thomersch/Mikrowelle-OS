@@ -2,7 +2,7 @@
 
 Mikrowelle OS is a static page generator for podcast websites and feeds.
 
-Tested on Python 2.7 and 3.3. Will not work under Python 2.6, please update in this case.
+Tested on Python 2.7 and 3.3. Will not work under Python 2.6, please update in this case. I strongly recommend Python 3.3, because it's the _future_.
 
 ## Feature List
 
@@ -30,7 +30,6 @@ Yep, we are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/
 ## Dependencies
 
 * Python
-	* lxml (for feed generation)
 	* jinja2 (templating engine)
 	* markdown (easy markdown language)
 * JavaScript _(those are already included in the repository)_
@@ -42,7 +41,7 @@ The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MI
 ## Installation Instructions
 
 * Install Python dependencies.
-	* `sudo pip install lxml jinja2 markdown`
+	* `sudo pip install jinja2 markdown`
 * Clone git repository.
 	* `git clone https://github.com/thomersch/Mikrowelle-OS.git`
 * Customize your podcast settings.
