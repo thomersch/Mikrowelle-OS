@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import xml.etree.ElementTree as etree
+from xml.etree import ElementTree as etree
 from datetime import datetime
 import sys
 
@@ -20,7 +20,7 @@ def _chapters(element, namespaces):
 
 	return xml_chapters
 
-def generate(channel, elements, settings):
+def generate(writepath, channel, elements, settings):
 	namespaces = {
 	"itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
 	"atom": "http://www.w3.org/2005/Atom",
@@ -28,6 +28,7 @@ def generate(channel, elements, settings):
 	}
 
 	r = etree.Element("rss", version="2.0", nsmap=namespaces)
+	element_tree = etree.ElementTree(r)
 	chan = etree.Element("channel")
 
 	# feed elements
@@ -76,7 +77,7 @@ def generate(channel, elements, settings):
 		ee["link"].text = element["link"]
 
 		ee["description"] = etree.Element("description")
-		ee["description"].text = etree.CDATA(element["description"])
+		ee["description"].text = "<![CDATA[%s]]>" % element["description"]
 
 		ee["guid"] = etree.Element("guid", isPermaLink="false")
 		ee["guid"].text = element["guid"]
@@ -112,5 +113,4 @@ def generate(channel, elements, settings):
 		chan.append(curitem)
 
 	r.append(chan)
-
-	return(etree.tostring(r, xml_declaration=True, pretty_print=True, encoding="utf-8"))
+	element_tree.write(writepath)

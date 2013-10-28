@@ -175,8 +175,10 @@ def generate(settings):
 			"author": settings["author"],
 			"artwork": settings["artwork_url"]
 		}
-		with open("./tmp_output/{}.xml".format(fmt), "wb") as f:
-			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
+		#with open("./tmp_output/{}.xml".format(fmt), "wb") as f:
+		#	f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
+		rssgen.generate(writepath="./tmp_output/{}.xml".format(fmt), channel=channel,
+			elements=elements, settings=settings)
 
 	# copy from temp to production and remove tmp
 	du.copy_tree("./tmp_output", publish)
