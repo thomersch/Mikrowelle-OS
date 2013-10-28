@@ -23,7 +23,7 @@ def getsettings():
 
 
 def _writeJsonData(filefolder, fn):
-	with open("{}{}".format(filefolder, fn)) as f:
+	with open("{}{}".format(filefolder, fn), encoding="utf-8") as f:
 		h = json.loads(f.read())
 		o = {}
 		# get all the metadata!
