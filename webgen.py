@@ -105,8 +105,13 @@ def jsontransform(settings):
 		os.mkdir(filefolder)
 
 	filelist = _getJsonFileList(filefolder)
+	if filelist == []:
+		progresslength = 1
+	else:
+		progresslength = len(filelist)*2
+
 	global progress
-	progress = AnimatedProgressBar(end=len(filelist)*2, width=60)
+	progress = AnimatedProgressBar(end=progresslength, width=60)
 
 	for fn in filelist:
 		_writeJsonData(filefolder, fn)
