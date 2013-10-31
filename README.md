@@ -30,6 +30,7 @@ Yep, we are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/
 ## Dependencies
 
 * Python
+	* lxml (for feed generation)
 	* jinja2 (templating engine)
 	* markdown (easy markdown language)
 * JavaScript _(those are already included in the repository)_
@@ -41,7 +42,7 @@ The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MI
 ## Installation Instructions
 
 * Install Python dependencies.
-	* `sudo pip install jinja2 markdown`
+	* `sudo pip install lxml jinja2 markdown`
 * Clone git repository.
 	* `git clone https://github.com/thomersch/Mikrowelle-OS.git`
 * Customize your podcast settings.
