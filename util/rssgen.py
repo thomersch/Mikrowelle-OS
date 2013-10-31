@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from lxml import etree
+from lxml.etree import CDATA
 from datetime import datetime
 import sys
 
@@ -76,7 +77,7 @@ def generate(channel, elements, settings):
 		ee["link"].text = element["link"]
 
 		ee["description"] = etree.Element("description")
-		ee["description"].text = etree.CDATA(element["description"])
+		ee["description"].text = CDATA(element["description"])
 
 		ee["guid"] = etree.Element("guid", isPermaLink="false")
 		ee["guid"].text = element["guid"]
