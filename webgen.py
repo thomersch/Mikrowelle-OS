@@ -188,6 +188,7 @@ def run():
 	settings = getsettings()
 	jsontransform(settings)
 	generate(settings)
+	print("") # new line
 
 
 if __name__ == "__main__":
