@@ -94,6 +94,8 @@ def generate(channel, elements, settings):
 		else:
 			ee["it_image"] = etree.Element("{%s}image" % namespaces["itunes"], href=element["artwork"])
 
+		ee["image"] = ee["it_image"]
+
 		if isinstance(element["enclosure"]["length"], int):
 			element["enclosure"]["length"] = str(element["enclosure"]["length"])
 		ee["enclosure"] = etree.Element("enclosure", url=element["enclosure"]["url"], length=element["enclosure"]["length"], type=element["enclosure"]["type"])
