@@ -57,6 +57,9 @@ def generate(channel, elements, settings):
 
 	fe["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
 
+	fe["language"] = etree.Element("language")
+	fe["language"].text = settings.get("language", "de-de")
+
 	cat = settings.get("category", None)
 	if isinstance(cat, str) or isinstance(cat, unicode):
 		fe["it_category"] = etree.Element("{%s}category" % namespaces["itunes"], text=cat)
