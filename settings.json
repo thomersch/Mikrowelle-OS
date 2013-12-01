@@ -10,7 +10,6 @@
     ],
     "web_title": "Podcastname",
     "feed_title": "Podcastname ({} Feed)",
-    "feed_link": "http://example.com",
     "feed_description": "Feedbeschreibung/Podcastbeschreibung",
     "author": "Podcastautor",
     "artwork_url": "http://example.com/logo.png",

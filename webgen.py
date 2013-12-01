@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 2, 7)
+__version__ = (1, 3, 0)
 __author__ = "Thomas Skowron (thomersch)"
 
 import util.rssgen as rssgen
@@ -170,7 +170,7 @@ def generate(settings):
 
 		channel = {
 			"title": settings["feed_title"].format(fmt),
-			"link": settings["feed_link"],
+			"link": settings["baseurl"],
 			"description": settings["feed_description"],
 			"author": settings["author"],
 			"artwork": settings["artwork_url"]
