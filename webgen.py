@@ -19,13 +19,41 @@ from jinja2 import FileSystemLoader, Environment
 if sys.version_info < (3, 0, 0):
 	from codecs import open
 
-def getsettings():
+def get_settings():
 	with open("./settings.json", "r", encoding="utf-8") as f:
 		settings = json.loads(f.read())
 	return settings
 
 
-def _writeJsonData(filefolder, fn):
+def get_posts():
+	# search content
+	posts = []
+	if not os.path.exists("./posts/"):
+		print("[INFO] No posts found.")
+		os.mkdir("./posts/")
+
+	for filename in sorted(os.listdir("./posts/"), reverse=True):
+		with open("./posts/%s" % filename, "r", encoding="utf-8") as f:
+			# read data from json
+			p = json.loads(f.read())
+			posts.append(p)
+			
+	return posts
+
+
+def write_post(post, settings, single_template, progress=None):
+	formats = settings["feeds"]
+
+	# write individual page for post
+	with open("./tmp_output/%s.html" % post["episode"],
+		"a+", encoding="utf-8") as w:
+		w.write(single_template.render(post=post, settings=settings, feeds=formats, index_page=False))
+		if progress is not None:
+			progress + 1
+			progress.show_progress()
+
+
+def _write_json_data(filefolder, fn):
 	with open("{}{}".format(filefolder, fn), encoding="utf-8") as f:
 		h = json.loads(f.read())
 		o = {}
@@ -50,7 +78,7 @@ def _writeJsonData(filefolder, fn):
 			e.write(j)
 
 
-def _getJsonFileList(filefolder):
+def _get_json_file_list(filefolder):
 	def filterFile(fn):
 		if fn.endswith(".json") and not os.path.exists(os.path.join("./posts/", fn)):
 			return True
@@ -58,7 +86,7 @@ def _getJsonFileList(filefolder):
 	return [fn for fn in os.listdir(filefolder) if filterFile(fn)]
 
 
-def _getElements(posts, settings, format):
+def _get_elements(posts, settings, format):
 	filefolder = settings["filefolder"]
 	baseurl = settings["baseurl"]
 
@@ -95,9 +123,9 @@ def _getElements(posts, settings, format):
 	return elements
 
 
-def jsontransform(settings):
+def json_transform(settings):
 	"""
-		jsontransform() transforms auphonic input files into post files
+		json_transform() transforms auphonic input files into post files
 		that can be read by the generate() method
 	"""
 
@@ -107,7 +135,7 @@ def jsontransform(settings):
 		print("[INFO] No media in %s found." % filefolder)
 		os.mkdir(filefolder)
 
-	filelist = _getJsonFileList(filefolder)
+	filelist = _get_json_file_list(filefolder)
 	if filelist == []:
 		progresslength = 1
 	else:
@@ -117,7 +145,7 @@ def jsontransform(settings):
 	progress = AnimatedProgressBar(end=progresslength, width=60)
 
 	for fn in filelist:
-		_writeJsonData(filefolder, fn)
+		_write_json_data(filefolder, fn)
 		progress + 1
 		progress.show_progress()
 
@@ -138,24 +166,12 @@ def generate(settings):
 	index_template = jenv.get_template("index.tpl")
 	single_template = jenv.get_template("single.tpl")
 
-	# search content
-	posts = []
-	if not os.path.exists("./posts/"):
-		print("[INFO] No posts found.")
-		os.mkdir("./posts/")
+	# get posts from files
+	posts = get_posts()
 
-	for filename in sorted(os.listdir("./posts/"), reverse=True):
-		with open("./posts/%s" % filename, "r", encoding="utf-8") as f:
-			# read data from json
-			p = json.loads(f.read())
-			posts.append(p)
-			# write individual pages for posts
-			with open("./tmp_output/%s.html" % p["episode"],
-				"a+", encoding="utf-8") as w:
-				w.write(single_template.render(post=p, settings=settings, feeds=formats, index_page=False))
-				progress + 1
-				progress.show_progress()
-
+	# write posts with templates
+	for post in posts:
+		write_post(post, settings, single_template, progress)
 
 	# write index.html with all posts
 	index_file_content = index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True)
@@ -163,10 +179,9 @@ def generate(settings):
 	with open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
 		f.write(index_file_content)
 
-
 	# generate feed_description
 	for fmt in formats:
-		elements = _getElements(posts, settings, fmt)
+		elements = _get_elements(posts, settings, fmt)
 
 		channel = {
 			"title": settings["feed_title"].format(fmt),
@@ -179,14 +194,27 @@ def generate(settings):
 		with open("./tmp_output/{}.xml".format(fmt), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
+	if settings["search_enabled"]:
+		generate_search(settings)
+
 	# copy from temp to production and remove tmp
 	du.copy_tree("./tmp_output", publish)
 	shutil.rmtree("./tmp_output/")
 
 
+def generate_search(settings):
+	with open("./tmp_output/search.js", "w", encoding="utf-8") as f:
+		f.write("""var idx = lunr(function ()
+			{
+				this.field('title', { boost: 2 }),
+				this.field('body'),
+				this.field('chapters', { boost: 10 })
+			});""")
+
+
 def run():
-	settings = getsettings()
-	jsontransform(settings)
+	settings = get_settings()
+	json_transform(settings)
 	generate(settings)
 	print("") # new line
 

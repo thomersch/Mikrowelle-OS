@@ -16,5 +16,6 @@
     "audio_base_url": "http://audio.example.com/",
     "flattrlink": "https://flattr.com/submit/auto?url={}&title={}&user_id=FLATTRNAME&language=de_DE&category=audio",
     "category": "Technology",
-    "language": "de-de"
+    "language": "de-de",
+    "search_enabled": true 
 }
