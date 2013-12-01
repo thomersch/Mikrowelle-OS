@@ -9,6 +9,7 @@ Tested on Python 2.7 and 3.3. Will not work under Python 2.6, please update in t
 * Generating podcast feeds
 	* iTunes compatible
 	* Payment tag (Flattr)
+* Full text search in the browser
 * Flattr support
 	* New item for every episode, no manual generation needed.
 * Modern player
@@ -36,6 +37,7 @@ Yep, we are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/
 * JavaScript _(those are already included in the repository)_
 	* jQuery
 	* Podlove Web Player
+	* lunr.js (for full-text search)
 
 The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MIT license (see util/progressbar.py).
 
