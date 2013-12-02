@@ -4,6 +4,7 @@ __version__ = (1, 3, 0)
 __author__ = "Thomas Skowron (thomersch)"
 
 import util.rssgen as rssgen
+import util.search
 from util.progressbar import AnimatedProgressBar
 
 import sys
@@ -195,32 +196,11 @@ def generate(settings):
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
 	if settings["search_enabled"]:
-		generate_search(posts, settings)
+		util.search.generate_search(posts, settings)
 
 	# copy from temp to production and remove tmp
 	du.copy_tree("./tmp_output", publish)
 	shutil.rmtree("./tmp_output/")
-
-
-def generate_search(posts, settings):
-	with open("./tmp_output/search.js", "w", encoding="utf-8") as f:
-		f.write("""var idx = lunr(function ()
-{
-	this.field('title', { boost: 2 }),
-	this.field('body'),
-	this.field('chapters', { boost: 10 })
-});
-""")
-
-		for post in posts:
-			chapters = [c["title"] for c in post["chapters"]]
-			f.write("""idx.add({
-	"title": "%s",
-	"body": "%s",
-	"chapters": "%s",
-	"id": "%s"
-});
-""" % (post["title"], post["content"], str(chapters), post["episode"]))
 
 
 def run():
