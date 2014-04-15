@@ -48,7 +48,7 @@ The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MI
 * Clone git repository.
 	* `git clone https://github.com/thomersch/Mikrowelle-OS.git`
 * Customize your podcast settings.
-	* Go to `settings.json` and change the values the way you need it.
+	* Rename `settings.default.json` to `settings.json` and change the values the way you need it.
 * For the best expierence, use Auphonic. For instructions see section *"Working with Auphonic"*.
 * Run `webgen.py`.
 * Publish the `audio` folder and the `pub` folder on the interwebz.
