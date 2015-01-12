@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 3, 0)
+__version__ = (1, 3, 1)
 __author__ = "Thomas Skowron (thomersch)"
 
 import util.rssgen as rssgen
-import util.search
 from util.progressbar import AnimatedProgressBar
 
 import sys
@@ -20,21 +19,23 @@ from jinja2 import FileSystemLoader, Environment
 if sys.version_info < (3, 0, 0):
 	from codecs import open
 
+POST_PATH = "posts/"
+TMP_PATH = "tmp_output/"
+
 def get_settings():
-	with open("./settings.json", "r", encoding="utf-8") as f:
+	with open("settings.json", "r", encoding="utf-8") as f:
 		settings = json.loads(f.read())
 	return settings
 
 
 def get_posts():
-	# search content
 	posts = []
-	if not os.path.exists("./posts/"):
+	if not os.path.exists(POST_PATH):
 		print("[INFO] No posts found.")
-		os.mkdir("./posts/")
+		os.mkdir(POST_PATH)
 
-	for filename in sorted(os.listdir("./posts/"), reverse=True):
-		with open("./posts/%s" % filename, "r", encoding="utf-8") as f:
+	for filename in sorted(os.listdir(POST_PATH), reverse=True):
+		with open(POST_PATH+"%s" % filename, "r", encoding="utf-8") as f:
 			# read data from json
 			p = json.loads(f.read())
 			posts.append(p)
@@ -46,7 +47,7 @@ def write_post(post, settings, single_template, progress=None):
 	formats = settings["feeds"]
 
 	# write individual page for post
-	with open("./tmp_output/%s.html" % post["episode"],
+	with open(TMP_PATH + "%s.html" % post["episode"],
 		"a+", encoding="utf-8") as w:
 		w.write(single_template.render(post=post, settings=settings, feeds=formats, index_page=False))
 		if progress is not None:
@@ -72,16 +73,16 @@ def _write_json_data(filefolder, fn):
 		j = json.dumps(o, sort_keys=True, indent=4, separators=(',', ': '))
 		
 		# write converted file to post storage folder
-		if not os.path.exists("./posts/"):
-			os.mkdir("./posts/")
-		episode_file_name = "./posts/{}".format(fn)
+		if not os.path.exists(POST_PATH):
+			os.mkdir(POST_PATH)
+		episode_file_name = POST_PATH + "{}".format(fn)
 		with open(episode_file_name, "a+", encoding="utf-8") as e:
 			e.write(j)
 
 
 def _get_json_file_list(filefolder):
 	def filterFile(fn):
-		if fn.endswith(".json") and not os.path.exists(os.path.join("./posts/", fn)):
+		if fn.endswith(".json") and not os.path.exists(os.path.join(POST_PATH, fn)):
 			return True
 		
 	return [fn for fn in os.listdir(filefolder) if filterFile(fn)]
@@ -158,9 +159,9 @@ def generate(settings):
 	formats = settings["feeds"]
 
 	# create output folder
-	if os.path.exists("./tmp_output/"):
-		shutil.rmtree("./tmp_output/")
-	os.mkdir("tmp_output")
+	if os.path.exists(TMP_PATH):
+		shutil.rmtree(TMP_PATH)
+	os.mkdir(TMP_PATH)
 
 	# load template files
 	jenv = Environment(loader=FileSystemLoader(tplfolder))
@@ -177,7 +178,7 @@ def generate(settings):
 	# write index.html with all posts
 	index_file_content = index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True)
 
-	with open("./tmp_output/index.html", "a+", encoding="utf-8") as f:
+	with open(TMP_PATH + "index.html", "a+", encoding="utf-8") as f:
 		f.write(index_file_content)
 
 	# generate feed_description
@@ -193,15 +194,12 @@ def generate(settings):
 			"artwork": settings["artwork_url"]
 		}
 		
-		with open("./tmp_output/{}.xml".format(fmt), "wb") as f:
+		with open(TMP_PATH + "{}.xml".format(fmt), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
-	if settings["search_enabled"]:
-		util.search.generate_search(posts, settings)
-
 	# copy from temp to production and remove tmp
-	du.copy_tree("./tmp_output", publish)
-	shutil.rmtree("./tmp_output/")
+	du.copy_tree(TMP_PATH[:-1], publish)
+	shutil.rmtree(TMP_PATH)
 
 
 def run():
