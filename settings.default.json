@@ -8,6 +8,7 @@
         "m4a",
         "opus"
     ],
+    "feedinterval": "1440",
     "web_title": "Podcastname",
     "feed_title": "Podcastname ({} Feed)",
     "feed_description": "Feedbeschreibung/Podcastbeschreibung",

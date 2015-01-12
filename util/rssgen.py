@@ -39,7 +39,10 @@ def generate(channel, elements, settings):
 
 	fe["link"] = etree.Element("link")
 	fe["link"].text = channel["link"]
-	
+
+	fe["ttl"] = etree.Element("ttl")
+	fe["ttl"].text = channel["feedinterval"]
+
 	fe["description"] = etree.Element("description")
 	fe["description"].text = channel["description"]
 

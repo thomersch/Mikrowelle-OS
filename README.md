@@ -9,6 +9,7 @@ Tested on Python 2.7 and 3.3. Will not work under Python 2.6, please update in t
 * Generating podcast feeds
 	* iTunes compatible
 	* Payment tag (Flattr)
+	* with TTL-support (reduces traffic by setting a sane default interval for feed-refreshing in podcast clients)
 * Full text search in the browser
 * Flattr support
 	* New item for every episode, no manual generation needed.
