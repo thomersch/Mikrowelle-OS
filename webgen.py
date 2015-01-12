@@ -10,6 +10,7 @@ import sys
 import os
 import json
 import shutil
+import math
 from datetime import datetime
 import distutils.dir_util as du
 
@@ -125,6 +126,31 @@ def _get_elements(posts, settings, format):
 	return elements
 
 
+def _generate_index_pages(posts, settings, formats, index_template):
+	posts_on_page = settings.get("posts_on_page", None)
+	cur_page = 0
+	if posts_on_page is not None:
+		while cur_page*posts_on_page < len(posts):
+			page_posts = posts[posts_on_page*cur_page:posts_on_page*(cur_page+1)]
+			if cur_page == 0:
+				filename = TMP_PATH+"index.html"
+			else:
+				filename = TMP_PATH+"index.%i.html" % cur_page
+
+			with open(filename, "a+", encoding="utf-8") as f:
+				if (cur_page + 1)*posts_on_page >= len(posts):
+					next = None
+				else:
+					next = cur_page+1
+				f.write(index_template.render(posts=page_posts, settings=settings, feeds=formats, index_page=True, next=next))
+			cur_page += 1
+
+	else:
+		# write index.html with all posts
+		with open(TMP_PATH+"index.html", "a+", encoding="utf-8") as f:
+			f.write(index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True))
+
+
 def json_transform(settings):
 	"""
 		json_transform() transforms auphonic input files into post files
@@ -175,11 +201,7 @@ def generate(settings):
 	for post in posts:
 		write_post(post, settings, single_template, progress)
 
-	# write index.html with all posts
-	index_file_content = index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True)
-
-	with open(TMP_PATH + "index.html", "a+", encoding="utf-8") as f:
-		f.write(index_file_content)
+	_generate_index_pages(posts, settings, formats, index_template)
 
 	# generate feed_description
 	for fmt in formats:

@@ -18,8 +18,13 @@
 		{% for post in posts %}
 		{% include 'post.tpl' with context %}
 		{% endfor %}
-	</section>
 
+		{% if next %}
+		<div id="prev_episodes">
+			<a href="/index.{{ next }}.html">ältere Episoden</a>
+		</div>
+		{% endif %}
+	</section>
 </body>
 
 </html>

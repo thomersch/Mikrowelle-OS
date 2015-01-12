@@ -18,5 +18,5 @@
     "flattrlink": "https://flattr.com/submit/auto?url={}&title={}&user_id=FLATTRNAME&language=de_DE&category=audio",
     "category": "Technology",
     "language": "de-de",
-    "search_enabled": true 
+    "posts_on_page": 5
 }
