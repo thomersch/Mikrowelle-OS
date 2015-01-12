@@ -12,14 +12,14 @@ def test():
 	os.mkdir("tmp")
 
 	# copy mikrowelle os system files
-	shutil.copy("../webgen.py", "./tmp/")
-	shutil.copy("../settings.json", "./tmp/")
-	shutil.copytree("../templates/", "./tmp/templates/")
-	shutil.copytree("../util/", "./tmp/util/")
-	shutil.copytree("./audio/", "./tmp/audio/")
+	shutil.copy("../webgen.py", "tmp/")
+	shutil.copy("../settings.default.json", "tmp/settings.json")
+	shutil.copytree("../templates/", "tmp/templates/")
+	shutil.copytree("../util/", "tmp/util/")
+	shutil.copytree("audio/", "tmp/audio/")
 
 	# changing to tmp directory, simulating working environment
-	os.chdir("./tmp/")
+	os.chdir("tmp/")
 	sys.path.append("./")
 	import webgen
 
