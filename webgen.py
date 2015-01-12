@@ -187,6 +187,7 @@ def generate(settings):
 		channel = {
 			"title": settings["feed_title"].format(fmt),
 			"link": settings["baseurl"],
+			"feedinterval": settings["feedinterval"],
 			"description": settings["feed_description"],
 			"author": settings["author"],
 			"artwork": settings["artwork_url"]
