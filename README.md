@@ -2,7 +2,7 @@
 
 Mikrowelle OS is a static page generator for podcast websites and feeds.
 
-Tested on Python 2.7 and 3.3. Will not work under Python 2.6, please update in this case. I strongly recommend Python 3.3, because it's the _future_.
+Tested on Python 2.7 and 3.4. Will not work under Python 2.6, please update in this case. I recommend using Python 3.4, when possible.
 
 ## Feature List
 

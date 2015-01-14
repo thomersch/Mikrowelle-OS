@@ -5,6 +5,7 @@ __author__ = "Thomas Skowron (thomersch)"
 
 import util.rssgen as rssgen
 from util.progressbar import AnimatedProgressBar
+from util.mime_types import mimetypes
 
 import sys
 import os
@@ -92,13 +93,6 @@ def _get_json_file_list(filefolder):
 def _get_elements(posts, settings, format):
 	filefolder = settings["filefolder"]
 	baseurl = settings["baseurl"]
-
-	# mime type mapping
-	mimetypes = {
-		"mp3": "audio/mpeg",
-		"m4a": "audio/x-m4a",
-		"opus": "audio/opus"
-	}
 
 	elements = []
 	for post in posts:

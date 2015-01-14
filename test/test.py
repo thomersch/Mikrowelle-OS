@@ -12,7 +12,7 @@ def test():
 	os.mkdir("tmp")
 
 	# copy mikrowelle os system files
-	shutil.copy("../webgen.py", "tmp/")
+	shutil.copy("../mikrowelle.py", "tmp/")
 	shutil.copy("../settings.default.json", "tmp/settings.json")
 	shutil.copytree("../templates/", "tmp/templates/")
 	shutil.copytree("../util/", "tmp/util/")
@@ -21,10 +21,10 @@ def test():
 	# changing to tmp directory, simulating working environment
 	os.chdir("tmp/")
 	sys.path.append("./")
-	import webgen
+	import mikrowelle
 
 	# I am a firestarter! Let's go!
-	webgen.run()
+	mikrowelle.run()
 
 	# check if the files are there
 	pub = ["001.html", "index.html", "m4a.xml", "mp3.xml", "opus.xml"]
