@@ -4,5 +4,3 @@
 <script src="/res/libs/html5shiv.js"></script>
 <script src="/res/libs/jquery-1.10.1.min.js"></script>
 <script src="/res/static/podlove-web-player.js"></script>
-<script src="/res/libs/lunr.min.js"></script>
-<script src="/search.js"></script>
