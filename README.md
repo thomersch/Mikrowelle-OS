@@ -38,7 +38,6 @@ Yep, we are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/
 * JavaScript _(those are already included in the repository)_
 	* jQuery
 	* Podlove Web Player
-	* lunr.js (for full-text search)
 
 The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MIT license (see util/progressbar.py).
 
