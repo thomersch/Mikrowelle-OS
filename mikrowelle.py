@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 3, 1)
+__version__ = (1, 3, 2)
 __author__ = "Thomas Skowron (thomersch)"
 
 import util.rssgen as rssgen
+import util.search as search
 from util.progressbar import AnimatedProgressBar
 from util.mime_types import mimetypes
 
@@ -212,6 +213,9 @@ def generate(settings):
 		
 		with open(TMP_PATH + "{}.xml".format(fmt), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
+
+	# build search 
+	search.build_index(posts, TMP_PATH + "episode_index.json")
 
 	# copy from temp to production and remove tmp
 	du.copy_tree(TMP_PATH[:-1], publish)
