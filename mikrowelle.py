@@ -61,18 +61,20 @@ def write_post(post, settings, single_template, progress=None):
 def _write_json_data(filefolder, fn):
 	with open("{}{}".format(filefolder, fn), encoding="utf-8") as f:
 		h = json.loads(f.read())
-		o = {}
+		
 		# get all the metadata!
-		o["episode"] = h["metadata"]["track"]
-		o["title"] = h["metadata"]["title"]
-		o["content"] = markdown.markdown(h["metadata"]["summary"])
-		o["subtitle"] = markdown.markdown(h["metadata"]["subtitle"])
-		o["date"] = h["change_time"]
-		o["humandate"] = datetime.strptime(
-			o["date"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y")
-		o["filename"] = h["output_basename"]
-		o["duration"] = h["length_timestring"]
-		o["chapters"] = h["chapters"]
+		o = {
+			"episode": h["metadata"]["track"],
+			"title": h["metadata"]["title"],
+			"content": markdown.markdown(h["metadata"]["summary"]),
+			"subtitle": markdown.markdown(h["metadata"]["subtitle"]),
+			"date": h["change_time"],
+			#TODO: make date format string configurable
+			"humandate": datetime.strptime(h["change_time"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y"),
+			"filename": h["output_basename"],
+			"duration": h["length_timestring"],
+			"chapters": h["chapters"]	
+		}
 		j = json.dumps(o, sort_keys=True, indent=4, separators=(',', ': '))
 		
 		# write converted file to post storage folder
