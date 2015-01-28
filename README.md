@@ -1,4 +1,4 @@
-# Mikrowelle OS
+# Mikrowelle OS ![Build status](https://travis-ci.org/thomersch/Mikrowelle-OS.svg?branch=master)
 
 Mikrowelle OS is a static page generator for podcast websites and feeds.
 
