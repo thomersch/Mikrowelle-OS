@@ -61,7 +61,7 @@ def write_post(post, settings, single_template, progress=None):
 def _write_json_data(filefolder, fn):
 	with open("{}{}".format(filefolder, fn), encoding="utf-8") as f:
 		h = json.loads(f.read())
-		
+
 		# get all the metadata!
 		o = {
 			"episode": h["metadata"]["track"],
@@ -71,12 +71,13 @@ def _write_json_data(filefolder, fn):
 			"date": h["change_time"],
 			#TODO: make date format string configurable
 			"humandate": datetime.strptime(h["change_time"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y"),
+			"humanduration" = datetime.strptime(h["length_timestring"], "%H:%M:%S.%f").strftime("%H:%M"),
 			"filename": h["output_basename"],
 			"duration": h["length_timestring"],
-			"chapters": h["chapters"]	
+			"chapters": h["chapters"]
 		}
 		j = json.dumps(o, sort_keys=True, indent=4, separators=(',', ': '))
-		
+
 		# write converted file to post storage folder
 		if not os.path.exists(POST_PATH):
 			os.mkdir(POST_PATH)
@@ -89,7 +90,7 @@ def _get_json_file_list(filefolder):
 	def filterFile(fn):
 		if fn.endswith(".json") and not os.path.exists(os.path.join(POST_PATH, fn)):
 			return True
-		
+
 	return [fn for fn in os.listdir(filefolder) if filterFile(fn)]
 
 
@@ -147,6 +148,9 @@ def _generate_index_pages(posts, settings, formats, index_template):
 		with open(TMP_PATH+"index.html", "a+", encoding="utf-8") as f:
 			f.write(index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True))
 
+def _generate_archive_page(posts, settings, formats, archive_template):
+	with open(TMP_PATH+"archive.html", "a+", encoding="utf-8") as f:
+		f.write(archive_template.render(posts=posts, settings=settings, feeds=formats))
 
 def json_transform(settings):
 	"""
@@ -190,6 +194,7 @@ def generate(settings):
 	jenv = Environment(loader=FileSystemLoader(tplfolder))
 	index_template = jenv.get_template("index.tpl")
 	single_template = jenv.get_template("single.tpl")
+	archive_template = jenv.get_template("archive.tpl")
 
 	# get posts from files
 	posts = get_posts()
@@ -199,6 +204,7 @@ def generate(settings):
 		write_post(post, settings, single_template, progress)
 
 	_generate_index_pages(posts, settings, formats, index_template)
+	_generate_archive_page(posts, settings, formats, archive_template)
 
 	# generate feed_description
 	for fmt in formats:
@@ -212,7 +218,7 @@ def generate(settings):
 			"author": settings["author"],
 			"artwork": settings["artwork_url"]
 		}
-		
+
 		with open(TMP_PATH + "{}.xml".format(fmt), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
