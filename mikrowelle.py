@@ -71,7 +71,7 @@ def _write_json_data(filefolder, fn):
 			"date": h["change_time"],
 			#TODO: make date format string configurable
 			"humandate": datetime.strptime(h["change_time"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y"),
-			"humanduration" = datetime.strptime(h["length_timestring"], "%H:%M:%S.%f").strftime("%H:%M"),
+			"humanduration": datetime.strptime(h["length_timestring"], "%H:%M:%S.%f").strftime("%H:%M"),
 			"filename": h["output_basename"],
 			"duration": h["length_timestring"],
 			"chapters": h["chapters"]
