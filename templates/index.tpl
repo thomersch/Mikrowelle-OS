@@ -19,6 +19,15 @@
 		{% include 'post.tpl' with context %}
 		{% endfor %}
 
+		{% if prev == 0 %}
+		<div id="new_episodes">
+			<a href="/index.html">neuere Episoden</a>
+		</div>
+		{% elif prev and prev > 0 %}
+		<div id="new_episodes">
+			<a href="/index.{{ prev }}.html">neuere Episoden</a>
+		</div>
+		{% endif %}
 		{% if next %}
 		<div id="prev_episodes">
 			<a href="/index.{{ next }}.html">ältere Episoden</a>

@@ -140,7 +140,11 @@ def _generate_index_pages(posts, settings, formats, index_template):
 					next = None
 				else:
 					next = cur_page+1
-				f.write(index_template.render(posts=page_posts, settings=settings, feeds=formats, index_page=True, next=next))
+				if cur_page > 0:
+					prev = cur_page-1
+				else:
+					prev = None
+				f.write(index_template.render(posts=page_posts, settings=settings, feeds=formats, index_page=True, prev=prev, next=next))
 			cur_page += 1
 
 	else:
