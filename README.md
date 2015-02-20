@@ -1,8 +1,8 @@
-# Mikrowelle OS[![Build Status](https://secure.travis-ci.org/thomersch/Mikrowelle-OS.png)](http://travis-ci.org/thomersch/Mikrowelle-OS)
+# Mikrowelle OS [![Build Status](https://secure.travis-ci.org/thomersch/Mikrowelle-OS.png)](http://travis-ci.org/thomersch/Mikrowelle-OS)
 
 Mikrowelle OS is a static page generator for podcast websites and feeds.
 
-Tested on Python 2.7 and 3.4. Will not work under Python 2.6, please update in this case. I recommend using Python 3.4, when possible.
+Tested on Python 2.7, 3.3, 3.4 and PyPy 2.5. Will not work under Python 2.6, please update in this case. If possible, prefer Python 3.
 
 ## Feature List
 
@@ -27,7 +27,7 @@ You won't need a special webserver to serve the application. You can simply thro
 
 ## Is it working?
 
-Yep, we are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([My Website](http://skowron.biz/impressum/), [Twitter](http://twitter.com/thomersch), [ADN](http://alpha.app.net/thomersch/)).
+Yep, we are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/). Though, there may be some issues. If you need assistance, feel free to contact me ([Twitter](http://twitter.com/thomersch)) or create an issue.
 
 ## Dependencies
 
@@ -108,7 +108,7 @@ The file name doesn't really matter, but your episode order will depend on it.
 ## Templating
 ### Changing the looks of your podcast page.
 
-You can customize your templates at any time. Simply go to the template folder and edit the files. Variables should be rather self explainatory.
+You can customize your templates at any time. Simply go to the template folder and edit the files. Variables should be rather self explainatory. A working example for a template is located [there](https://github.com/thomersch/mikrowelle-template).
 
 If you want to start a new style, I recommend to duplicate the `templates` folder and start editing in the duplicate. Remember to change the `tplfolder` path in `settings.json`.
 
