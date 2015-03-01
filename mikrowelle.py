@@ -199,6 +199,8 @@ def generate(settings):
 	index_template = jenv.get_template("index.tpl")
 	single_template = jenv.get_template("single.tpl")
 	archive_template = jenv.get_template("archive.tpl")
+	if os.path.exists(os.path.join(tplfolder, "style.css")):
+		shutil.copy(os.path.join(tplfolder, "style.css"), os.path.join(TMP_PATH, "style.css"))
 
 	# get posts from files
 	posts = get_posts()
