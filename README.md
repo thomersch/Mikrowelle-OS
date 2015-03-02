@@ -44,7 +44,7 @@ The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MI
 ## Installation Instructions
 
 * Install Python dependencies.
-	* `sudo pip install lxml jinja2 markdown`
+	* `pip install -r requirements.txt`
 * Clone git repository.
 	* `git clone https://github.com/thomersch/Mikrowelle-OS.git`
 * Customize your podcast settings.
