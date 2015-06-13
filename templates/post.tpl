@@ -13,8 +13,8 @@
 
 	<script>
 		$('#audio_{{post.episode}}').podlovewebplayer({
-			title: '{{post.title}}',
-			subtitle: '{{post.subtitle}}',
+			title: '{{post.title|e}}',
+			subtitle: '{{post.subtitle|e}}',
 			poster: '{{settings.artwork_url}}',
 			chapters: [ {% for chapter in post.chapters %} {"start":"{{chapter.start}}", "title": "{{chapter.title}}"}, {% endfor %} ],
 			chaptersVisible: true
