@@ -46,6 +46,7 @@ The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MI
 * Clone git repository.
 	* `git clone https://github.com/thomersch/Mikrowelle-OS.git`
 * Install Python dependencies.
+	* on Debian based systems: `sudo apt-get install python3-lxml`
 	* `pip install -r requirements.txt`
 * Customize your podcast settings.
 	* Rename `settings.default.json` to `settings.json` and change the values the way you need it.
