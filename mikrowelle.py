@@ -221,9 +221,11 @@ def generate(settings):
 			"link": settings["baseurl"],
 			"feedinterval": settings["feedinterval"],
 			"description": settings["feed_description"],
-			"author": settings["author"],
-			"artwork": settings["artwork_url"]
+			"author": settings["author"]
 		}
+
+		if "artwork_url" in settings:
+			channel["artwork"] = settings["artwork_url"]
 
 		with open(TMP_PATH + "{}.xml".format(fmt), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))

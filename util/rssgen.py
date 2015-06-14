@@ -64,8 +64,6 @@ def generate(channel, elements, settings):
 	fe["it_author"] = etree.Element("{%s}author" % namespaces["itunes"])
 	fe["it_author"].text = _encode(channel["author"])
 
-	fe["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
-
 	fe["language"] = etree.Element("language")
 	fe["language"].text = settings.get("language", "de-de")
 
@@ -73,8 +71,10 @@ def generate(channel, elements, settings):
 	if isinstance(cat, str) or isinstance(cat, unicode):
 		fe["it_category"] = etree.Element("{%s}category" % namespaces["itunes"], text=cat)
 
-	fe["logo"] = etree.Element("logo")
-	fe["logo"].text = _encode(channel["artwork"])
+	if "artwork" in channel:
+		fe["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
+		fe["logo"] = etree.Element("logo")
+		fe["logo"].text = _encode(channel["artwork"])
 
 	# append all items (feed data)
 	for x, etree_element in fe.items():
@@ -104,13 +104,13 @@ def generate(channel, elements, settings):
 		else:
 			ee["pubdate"].text = element["pubdate"]
 
-		if "artwork" not in element:
-			# take image/artwork from channel
-			ee["it_image"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
-		else:
-			ee["it_image"] = etree.Element("{%s}image" % namespaces["itunes"], href=element["artwork"])
-
-		ee["image"] = ee["it_image"]
+		if "artwork" in element or "artwork" in channel:
+			if "artwork" in element:
+				ee["it_image"] = etree.Element("{%s}image" % namespaces["itunes"], href=element["artwork"])
+			else:
+				# take image/artwork from channel
+				ee["it_image"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
+			ee["image"] = ee["it_image"]
 
 		if isinstance(element["enclosure"]["length"], int):
 			element["enclosure"]["length"] = str(element["enclosure"]["length"])
