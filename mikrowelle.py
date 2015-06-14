@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 3, 3)
+__version__ = (1, 4, 0)
 __author__ = "Thomas Skowron (thomersch)"
 
 import util.rssgen as rssgen
@@ -226,6 +226,9 @@ def generate(settings):
 
 		if "artwork_url" in settings:
 			channel["artwork"] = settings["artwork_url"]
+
+		if "explicit" in settings:
+			channel["explicit"] = settings["explicit"]
 
 		with open(TMP_PATH + "{}.xml".format(fmt), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))

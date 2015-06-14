@@ -76,6 +76,13 @@ def generate(channel, elements, settings):
 		fe["logo"] = etree.Element("logo")
 		fe["logo"].text = _encode(channel["artwork"])
 
+	if "explicit" in channel:
+		fe["explicit"] = etree.Element("{%s}explicit" % namespaces["itunes"])
+		if channel["explicit"] == True:
+			fe["explicit"].text = "yes"
+		else:
+			fe["explicit"].text = "clean"
+
 	# append all items (feed data)
 	for x, etree_element in fe.items():
 		chan.append(etree_element)
