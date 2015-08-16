@@ -19,7 +19,7 @@ Tested on Python 2.7, 3.3, 3.4 and PyPy 2.5. Will not work under Python 2.6, ple
 * Auphonic support
 * Podlove Simple Chapters
 * Suitable for heavy load situations
-	* no CGI/PHP bloat
+	* no CGI/PHP/runtime bloat
 
 ## What does "static page generator" mean?
 
@@ -111,9 +111,9 @@ The file name doesn't really matter, but your episode order will depend on it.
 
 You can customize your templates at any time. Simply go to the template folder and edit the files. Variables should be rather self explainatory. A working example for a template is located [there](https://github.com/thomersch/mikrowelle-template).
 
-If you want to start a new style, I recommend to duplicate the `templates` folder and start editing in the duplicate. Remember to change the `tplfolder` path in `settings.json`.
+If you want to start a new style, I recommend to duplicate the `templates/base-template` folder and start editing in the duplicate. Remember to change the `tplfolder` path in `settings.json`.
 
-Adding a stylesheet is nice as well, give it a try.
+Adding a stylesheet is nice as well, give it a try. The directory `res` in the template path will be linked in the pub-path, so you can place all your assets in `$templatename/res` and those will be available at `res` on your main publishing path, e.g. `podcast.example.com/res`.
 
 ## Feature requests
 
@@ -121,7 +121,7 @@ Give 'em to me. Create a ticket or contact me.
 
 ## Other Questions?
 
-Ask me. If you're nice to me, I will answer you.
+Ask me.
 
 ## License
 

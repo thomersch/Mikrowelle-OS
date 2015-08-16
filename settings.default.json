@@ -1,5 +1,5 @@
 {
-    "tplfolder": "./templates/",
+    "tplfolder": "./templates/base-template/",
     "baseurl": "http://example.com/",
     "filefolder": "./audio/",
     "publish": "./pub/",

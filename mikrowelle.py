@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 4, 0)
+__version__ = (1, 5, 0)
 __author__ = "Thomas Skowron (thomersch)"
 
 import util.rssgen as rssgen
@@ -234,11 +234,17 @@ def generate(settings):
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
 	# build search 
-	search.build_index(posts, TMP_PATH + "episode_index.json")
+	search.build_index(posts, os.path.join(TMP_PATH, "episode_index.json"))
 
 	# copy from temp to production and remove tmp
 	du.copy_tree(TMP_PATH[:-1], publish)
 	shutil.rmtree(TMP_PATH)
+
+	# link resources to pub
+	src = os.path.join(publish, "res")
+	dst = os.path.join(tplfolder, "res")
+	if not os.path.exists(src):
+		os.symlink(dst, src)
 
 
 def run():
