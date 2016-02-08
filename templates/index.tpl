@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<title>{{ settings.web_title }}</title>
 	<link rel="stylesheet" href="/style.css" />
-	{% include 'head.tpl' with context %}
+	{% include 'head.tpl' %}
 </head>
 
 <body>
@@ -16,7 +16,7 @@
 		{% include 'meta_block.tpl' %}
 
 		{% for post in posts %}
-		{% include 'post.tpl' with context %}
+		{% include 'post.tpl' %}
 		{% endfor %}
 
 		{% if prev == 0 %}

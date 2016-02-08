@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<title>{{ settings.web_title }}</title>
 	<link rel="stylesheet" href="/style.css" />
-	{% include 'head.tpl' with context %}
+	{% include 'head.tpl' %}
 </head>
 
 <body>
