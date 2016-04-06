@@ -22,8 +22,8 @@ from jinja2 import FileSystemLoader, Environment
 if sys.version_info < (3, 0, 0):
 	from codecs import open
 
-POST_PATH = "posts/"
-TMP_PATH = "tmp_output/"
+POST_PATH = "posts"
+TMP_PATH = "tmp_output"
 
 def get_settings():
 	with open("settings.json", "r", encoding="utf-8") as f:
@@ -38,7 +38,7 @@ def get_posts():
 		os.mkdir(POST_PATH)
 
 	for filename in sorted(os.listdir(POST_PATH), reverse=True):
-		with open(POST_PATH+"%s" % filename, "r", encoding="utf-8") as f:
+		with open(os.path.join(POST_PATH, filename), "r", encoding="utf-8") as f:
 			# read data from json
 			p = json.loads(f.read())
 			posts.append(p)
@@ -50,7 +50,7 @@ def write_post(post, settings, single_template, progress=None):
 	formats = settings["feeds"]
 
 	# write individual page for post
-	with open(TMP_PATH + "%s.html" % post["episode"],
+	with open(os.path.join(TMP_PATH, "%s.html" % post["episode"]),
 		"a+", encoding="utf-8") as w:
 		w.write(single_template.render(post=post, settings=settings, feeds=formats, index_page=False))
 		if progress is not None:
@@ -81,7 +81,7 @@ def _write_json_data(filefolder, fn):
 		# write converted file to post storage folder
 		if not os.path.exists(POST_PATH):
 			os.mkdir(POST_PATH)
-		episode_file_name = POST_PATH + "{}".format(fn)
+		episode_file_name = os.path.join(POST_PATH, "%s" % format(fn))
 		with open(episode_file_name, "a+", encoding="utf-8") as e:
 			e.write(j)
 
@@ -131,9 +131,9 @@ def _generate_index_pages(posts, settings, formats, index_template):
 		while cur_page*posts_on_page < len(posts):
 			page_posts = posts[posts_on_page*cur_page:posts_on_page*(cur_page+1)]
 			if cur_page == 0:
-				filename = TMP_PATH+"index.html"
+				filename = os.path.join(TMP_PATH, "index.html")
 			else:
-				filename = TMP_PATH+"index.%i.html" % cur_page
+				filename = os.path.join(TMP_PATH, "index.%i.html" % cur_page)
 
 			with open(filename, "a+", encoding="utf-8") as f:
 				if (cur_page + 1)*posts_on_page >= len(posts):
@@ -149,11 +149,11 @@ def _generate_index_pages(posts, settings, formats, index_template):
 
 	else:
 		# write index.html with all posts
-		with open(TMP_PATH+"index.html", "a+", encoding="utf-8") as f:
+		with open(os.path.join(TMP_PATH, "index.html"), "a+", encoding="utf-8") as f:
 			f.write(index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True))
 
 def _generate_archive_page(posts, settings, formats, archive_template):
-	with open(TMP_PATH+"archive.html", "a+", encoding="utf-8") as f:
+	with open(os.path.join(TMP_PATH, "archive.html"), "a+", encoding="utf-8") as f:
 		f.write(archive_template.render(posts=posts, settings=settings, feeds=formats))
 
 def json_transform(settings):
@@ -230,14 +230,14 @@ def generate(settings):
 		if "explicit" in settings:
 			channel["explicit"] = settings["explicit"]
 
-		with open(TMP_PATH + "{}.xml".format(fmt), "wb") as f:
+		with open(os.path.join(TMP_PATH, "{}.xml".format(fmt)), "wb") as f:
 			f.write(rssgen.generate(channel=channel, elements=elements, settings=settings))
 
 	# build search 
 	search.build_index(posts, os.path.join(TMP_PATH, "episode_index.json"))
 
 	# copy from temp to production and remove tmp
-	du.copy_tree(TMP_PATH[:-1], publish)
+	du.copy_tree(TMP_PATH, publish)
 	shutil.rmtree(TMP_PATH)
 
 	# link resources to pub
