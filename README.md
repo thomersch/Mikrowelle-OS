@@ -39,8 +39,6 @@ Yep, we are using it actively in our podcast: [Mikrowelle](http://mikrowelle.me/
 	* jQuery
 	* Podlove Web Player
 
-The progress bar is powered by [ikame](https://github.com/ikame/progressbar), MIT license (see util/progressbar.py).
-
 ## Installation Instructions
 
 * Clone git repository.

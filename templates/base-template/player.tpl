@@ -12,10 +12,16 @@
 	<script src="/res/pwp/js/podlove-web-player.js"></script>
 	<script type="text/javascript">
 		$('audio').podlovewebplayer({
-			title: '{{post.title|e}}',
-			subtitle: '{{post.subtitle|e}}',
-			poster: '{{settings.artwork_url}}',
-			chapters: [ {% for chapter in post.chapters %} {"start":"{{chapter.start}}", "title": "{{chapter.title}}"}, {% endfor %} ]
+			show: {
+				title: '{{ settings.web_title|e }}',
+				url: '{{ settings.baseurl }}'
+			},
+			title: '{{ post.title|e }}',
+			subtitle: '{{ post.subtitle }}',
+			poster: '{{ settings.artwork_url }}',
+			permalink: '{{ post.episode }}',
+			chapters: [ {% for chapter in post.chapters %} {"start":"{{chapter.start}}", "title": "{{chapter.title}}"}, {% endfor %} ],
+			activeTab: "chapters"
 		});
 	</script>
 </body>
