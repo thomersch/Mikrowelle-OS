@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-__version__ = (1, 5, 0)
-__author__ = "Thomas Skowron (thomersch)"
+__version__ = (2, 0, 0)
+__author__ = "Thomas Skowron"
 
 import util.rssgen as rssgen
 import util.search as search
-from util.progressbar import AnimatedProgressBar
 from util.mime_types import mimetypes
 
 import sys
@@ -46,16 +45,17 @@ def get_posts():
 	return posts
 
 
-def write_post(post, settings, single_template, progress=None):
+def write_post(post, settings, single_template, player_template):
 	formats = settings["feeds"]
 
 	# write individual page for post
 	with open(os.path.join(TMP_PATH, "%s.html" % post["episode"]),
 		"a+", encoding="utf-8") as w:
 		w.write(single_template.render(post=post, settings=settings, feeds=formats, index_page=False))
-		if progress is not None:
-			progress + 1
-			progress.show_progress()
+
+	# write player page
+	with open(os.path.join(TMP_PATH, "player_%s.html" % post["episode"]), "a+", encoding="utf-8") as w:
+		w.write(player_template.render(post=post, settings=settings))
 
 
 def _write_json_data(filefolder, fn):
@@ -168,19 +168,8 @@ def json_transform(settings):
 		print("[INFO] No media in %s found." % filefolder)
 		os.mkdir(filefolder)
 
-	filelist = _get_json_file_list(filefolder)
-	if filelist == []:
-		progresslength = 1
-	else:
-		progresslength = len(filelist)*2
-
-	global progress
-	progress = AnimatedProgressBar(end=progresslength, width=60)
-
-	for fn in filelist:
+	for fn in _get_json_file_list(filefolder):
 		_write_json_data(filefolder, fn)
-		progress + 1
-		progress.show_progress()
 
 
 def generate(settings):
@@ -198,6 +187,7 @@ def generate(settings):
 	jenv = Environment(loader=FileSystemLoader(tplfolder))
 	index_template = jenv.get_template("index.tpl")
 	single_template = jenv.get_template("single.tpl")
+	player_template = jenv.get_template("player.tpl")
 	archive_template = jenv.get_template("archive.tpl")
 	if os.path.exists(os.path.join(tplfolder, "style.css")):
 		shutil.copy(os.path.join(tplfolder, "style.css"), os.path.join(TMP_PATH, "style.css"))
@@ -207,7 +197,7 @@ def generate(settings):
 
 	# write posts with templates
 	for post in posts:
-		write_post(post, settings, single_template, progress)
+		write_post(post, settings, single_template, player_template)
 
 	_generate_index_pages(posts, settings, formats, index_template)
 	_generate_archive_page(posts, settings, formats, archive_template)
@@ -244,7 +234,7 @@ def generate(settings):
 	src = os.path.join(publish, "res")
 	dst = os.path.join(tplfolder, "res")
 	if not os.path.exists(src):
-		os.symlink(dst, src)
+		os.symlink(os.path.abspath(dst), src)
 
 
 def run():
