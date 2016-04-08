@@ -46,12 +46,14 @@ def get_posts():
 
 
 def write_post(post, settings, single_template, player_template):
-	formats = settings["feeds"]
+	format_mimes = {}
+	for fmt in settings["feeds"]:
+		format_mimes[fmt] = mimetypes[fmt]
 
 	# write individual page for post
 	with open(os.path.join(TMP_PATH, "%s.html" % post["episode"]),
 		"a+", encoding="utf-8") as w:
-		w.write(single_template.render(post=post, settings=settings, feeds=formats, index_page=False))
+		w.write(single_template.render(post=post, settings=settings, formats=format_mimes, index_page=False))
 
 	# write player page
 	with open(os.path.join(TMP_PATH, "player_%s.html" % post["episode"]), "a+", encoding="utf-8") as w:
@@ -125,6 +127,10 @@ def _get_elements(posts, settings, format):
 
 
 def _generate_index_pages(posts, settings, formats, index_template):
+	format_mimes = {}
+	for fmt in settings["feeds"]:
+		format_mimes[fmt] = mimetypes[fmt]
+
 	posts_on_page = settings.get("posts_on_page", None)
 	cur_page = 0
 	if posts_on_page is not None:
@@ -144,13 +150,13 @@ def _generate_index_pages(posts, settings, formats, index_template):
 					prev = cur_page-1
 				else:
 					prev = None
-				f.write(index_template.render(posts=page_posts, settings=settings, feeds=formats, index_page=True, prev=prev, next=next))
+				f.write(index_template.render(posts=page_posts, settings=settings, formats=format_mimes, index_page=True, prev=prev, next=next))
 			cur_page += 1
 
 	else:
 		# write index.html with all posts
 		with open(os.path.join(TMP_PATH, "index.html"), "a+", encoding="utf-8") as f:
-			f.write(index_template.render(posts=posts, settings=settings, feeds=formats, index_page=True))
+			f.write(index_template.render(posts=posts, settings=settings, formats=format_mimes, index_page=True))
 
 def _generate_archive_page(posts, settings, formats, archive_template):
 	with open(os.path.join(TMP_PATH, "archive.html"), "a+", encoding="utf-8") as f:
@@ -241,7 +247,6 @@ def run():
 	settings = get_settings()
 	json_transform(settings)
 	generate(settings)
-	print("") # new line
 
 
 if __name__ == "__main__":

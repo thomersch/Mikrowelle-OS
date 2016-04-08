@@ -36,3 +36,8 @@ nosetests.xml
 
 # Additional
 .DS_Store
+
+pub/
+audio/
+test/tmp/
+posts/
