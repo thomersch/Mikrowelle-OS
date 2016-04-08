@@ -159,8 +159,12 @@ def _generate_index_pages(posts, settings, formats, index_template):
 			f.write(index_template.render(posts=posts, settings=settings, formats=format_mimes, index_page=True))
 
 def _generate_archive_page(posts, settings, formats, archive_template):
+	format_mimes = {}
+	for fmt in settings["feeds"]:
+		format_mimes[fmt] = mimetypes[fmt]
+
 	with open(os.path.join(TMP_PATH, "archive.html"), "a+", encoding="utf-8") as f:
-		f.write(archive_template.render(posts=posts, settings=settings, feeds=formats))
+		f.write(archive_template.render(posts=posts, settings=settings, formats=format_mimes))
 
 def json_transform(settings):
 	"""

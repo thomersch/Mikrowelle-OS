@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<title>{{ settings.web_title }}</title>
 	<link rel="stylesheet" href="/style.css" />
-	{% include 'head.tpl' with context %}
+	{% include 'head.tpl' %}
 </head>
 
 <body>
@@ -16,21 +16,21 @@
 		{% include 'meta_block.tpl' %}
 
 		{% for post in posts %}
-		{% include 'post.tpl' with context %}
+		{% include 'post.tpl' %}
 		{% endfor %}
 
 		{% if prev == 0 %}
 		<div id="new_episodes">
-			<a href="/index.html">neuere Episoden</a>
+			<a href="/index.html">newer episodes</a>
 		</div>
 		{% elif prev and prev > 0 %}
 		<div id="new_episodes">
-			<a href="/index.{{ prev }}.html">neuere Episoden</a>
+			<a href="/index.{{ prev }}.html">newer episodes</a>
 		</div>
 		{% endif %}
 		{% if next %}
 		<div id="prev_episodes">
-			<a href="/index.{{ next }}.html">ältere Episoden</a>
+			<a href="/index.{{ next }}.html">older episodes</a>
 		</div>
 		{% endif %}
 	</section>

@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<title>{{ settings.web_title }}</title>
 	<link rel="stylesheet" href="/style.css" />
-	{% include 'head.tpl' with context %}
+	{% include 'head.tpl' %}
 </head>
 
 <body>
@@ -19,8 +19,15 @@
 		<article>
 			<h3>{{ post.title }}</h3>
 			{{ post.subtitle }}
-			Dauer: {{ post.humanduration }} Stunden
-			<div class="actions">Veröffentlicht am: {{ post.humandate }}, <a href="{{ post.episode }}.html">Direktlink zur Episode</a>, Download: <a href="{{ settings.audio_base_url }}{{ post.filename }}.mp3">mp3</a>, <a href="{{ settings.audio_base_url }}{{ post.filename }}.opus">opus</a>, <a href="{{ settings.audio_base_url }}{{ post.filename }}.m4a">mp4</a></div>
+			Duration: {{ post.humanduration }} h
+			<div class="actions">
+				Published on: {{ post.humandate }},
+				<a href="{{ post.episode }}.html">Direct Episode Link</a>
+				Download:
+					{% for extension, mime in formats.iteritems() %}
+						<a href="{{ settings.audio_base_url }}{{ post.filename }}.{{ extension }}">{{ mime }}</a>
+					{% endfor %}
+			</div>
 		</article>
 		{% endfor %}
 	</section>
