@@ -1,8 +1,8 @@
 <article>
 	<h3>{{ post.title }}</h3>
 
-	<audio controls="controls" data-podlove-web-player-source="player_{{post.episode}}.html">
-		{% for extension, mime in formats.iteritems() %}
+	<audio controls="controls" data-podlove-web-player-source="player_{{post.episode}}.html" preload="none">
+		{% for extension, mime in formats.items() %}
 			<source src="{{ settings.audio_base_url }}{{ post.filename }}.{{ extension }}" type="{{ mime }}"</source>
 		{% endfor %}
 	</audio>
@@ -13,8 +13,8 @@
 		Published on: {{ post.humandate }},
 		<a href="{{ post.episode }}.html">Direct Episode Link</a>
 		Download:
-		{% for extension, mime in formats.iteritems() %}
-			<a href="{{ settings.audio_base_url }}{{ post.filename }}.{{ extension }}">{{ mime }}</a>
+		{% for extension, mime in formats.items() %}
+			<a href="{{ settings.audio_base_url }}{{ post.filename }}.{{ extension }}">{{ extension }}</a>
 		{% endfor %}
 	</div>
 </article>

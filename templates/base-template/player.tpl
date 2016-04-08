@@ -4,12 +4,14 @@
 	<link href="/res/pwp/css/pwp-dark-green.css" rel="stylesheet" media="screen" type="text/css" />
 </head>
 <body>
-	<audio>
-		<source src="{{settings.audio_base_url}}{{post.filename}}.mp3" type="audio/mpeg"></source>
+	<audio preload="none">
+		{% for extension, mime in formats.items() %}
+			<source src="{{ settings.audio_base_url }}{{ post.filename }}.{{ extension }}" type="{{ mime }}"</source>
+		{% endfor %}
 	</audio>
 
 	<script src="/res/pwp/js/vendor/jquery.min.js"></script>
-	<script src="/res/pwp/js/podlove-web-player.js"></script>
+	<script src="/res/pwp/js/podlove-web-player.min.js"></script>
 	<script type="text/javascript">
 		$('audio').podlovewebplayer({
 			show: {
@@ -20,8 +22,7 @@
 			subtitle: '{{ post.subtitle }}',
 			poster: '{{ settings.artwork_url }}',
 			permalink: '{{ post.episode }}',
-			chapters: [ {% for chapter in post.chapters %} {"start":"{{chapter.start}}", "title": "{{chapter.title}}"}, {% endfor %} ],
-			activeTab: "chapters"
+			chapters: [ {% for chapter in post.chapters %} {"start":"{{chapter.start}}", "title": "{{chapter.title}}"}, {% endfor %} ]
 		});
 	</script>
 </body>

@@ -24,8 +24,8 @@
 				Published on: {{ post.humandate }},
 				<a href="{{ post.episode }}.html">Direct Episode Link</a>
 				Download:
-					{% for extension, mime in formats.iteritems() %}
-						<a href="{{ settings.audio_base_url }}{{ post.filename }}.{{ extension }}">{{ mime }}</a>
+					{% for extension, mime in formats.items() %}
+						<a href="{{ settings.audio_base_url }}{{ post.filename }}.{{ extension }}">{{ extension }}</a>
 					{% endfor %}
 			</div>
 		</article>

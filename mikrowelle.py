@@ -57,7 +57,7 @@ def write_post(post, settings, single_template, player_template):
 
 	# write player page
 	with open(os.path.join(TMP_PATH, "player_%s.html" % post["episode"]), "a+", encoding="utf-8") as w:
-		w.write(player_template.render(post=post, settings=settings))
+		w.write(player_template.render(post=post, settings=settings, formats=format_mimes))
 
 
 def _write_json_data(filefolder, fn):
