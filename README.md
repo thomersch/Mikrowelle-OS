@@ -107,15 +107,13 @@ The file name doesn't really matter, but your episode order will depend on it.
 ## Templating
 ### Changing the looks of your podcast page.
 
-You can customize your templates at any time. Simply go to the template folder and edit the files. Variables should be rather self explainatory. A working example for a template is located [there](https://github.com/thomersch/mikrowelle-template).
-
 If you want to start a new style, I recommend to duplicate the `templates/base-template` folder and start editing in the duplicate. Remember to change the `tplfolder` path in `settings.json`.
 
 Adding a stylesheet is nice as well, give it a try. The directory `res` in the template path will be linked in the pub-path, so you can place all your assets in `$templatename/res` and those will be available at `res` on your main publishing path, e.g. `podcast.example.com/res`.
 
 ## Feature requests
 
-Give 'em to me. Create a ticket or contact me.
+Give 'em to me. Create a GitHub issue or contact me.
 
 ## Other Questions?
 
@@ -124,3 +122,9 @@ Ask me.
 ## License
 
 BSD License. No bullshit. See `LICENSE` file.
+
+## Contributors
+
+* Thomas Skowron
+* Thomas Sänger (HorayNarea)
+* Andreas Hubel (saerdnaer)

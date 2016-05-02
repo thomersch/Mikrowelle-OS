@@ -22,11 +22,6 @@ def _chapters(element, namespaces):
 	return xml_chapters
 
 
-def _encode(s):
-	s = s.replace("&", "&amp;")
-	return s
-
-
 def generate(channel, elements, settings):
 	namespaces = {
 	"itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
@@ -41,16 +36,16 @@ def generate(channel, elements, settings):
 	fe = {}
 
 	fe["title"] = etree.Element("title")
-	fe["title"].text = _encode(channel["title"])
+	fe["title"].text = channel["title"]
 
 	fe["link"] = etree.Element("link")
-	fe["link"].text = _encode(channel["link"])
+	fe["link"].text = channel["link"]
 
 	fe["ttl"] = etree.Element("ttl")
 	fe["ttl"].text = channel["feedinterval"]
 
 	fe["description"] = etree.Element("description")
-	fe["description"].text = _encode(channel["description"])
+	fe["description"].text = channel["description"]
 
 	fe["lastBuildDate"] = etree.Element("lastBuildDate")
 	fe["lastBuildDate"].text = datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
@@ -59,22 +54,22 @@ def generate(channel, elements, settings):
 	fe["generator"].text = "Mikrowelle OS"
 
 	fe["author"] = etree.Element("author")
-	fe["author"].text = _encode(channel["author"])
+	fe["author"].text = channel["author"]
 
 	fe["it_author"] = etree.Element("{%s}author" % namespaces["itunes"])
-	fe["it_author"].text = _encode(channel["author"])
+	fe["it_author"].text = channel["author"]
 
 	fe["language"] = etree.Element("language")
 	fe["language"].text = settings.get("language", "de-de")
 
-	cat = _encode(settings.get("category", None))
+	cat = settings.get("category", None)
 	if isinstance(cat, str) or isinstance(cat, unicode):
 		fe["it_category"] = etree.Element("{%s}category" % namespaces["itunes"], text=cat)
 
 	if "artwork" in channel:
 		fe["it_logo"] = etree.Element("{%s}image" % namespaces["itunes"], href=channel["artwork"])
 		fe["logo"] = etree.Element("logo")
-		fe["logo"].text = _encode(channel["artwork"])
+		fe["logo"].text = channel["artwork"]
 
 	if "explicit" in channel:
 		fe["explicit"] = etree.Element("{%s}explicit" % namespaces["itunes"])
