@@ -39,9 +39,11 @@ def get_posts():
 	for filename in sorted(os.listdir(POST_PATH), reverse=True):
 		with open(os.path.join(POST_PATH, filename), "r", encoding="utf-8") as f:
 			# read data from json
-			p = json.loads(f.read())
-			posts.append(p)
-			
+			try:
+				p = json.loads(f.read())
+				posts.append(p)
+			except ValueError:
+				print("[INFO] Ignored non-json file in posts-folder:", filename)
 	return posts
 
 
