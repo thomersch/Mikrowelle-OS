@@ -68,17 +68,17 @@ def _write_json_data(filefolder, fn):
 
 		# get all the metadata!
 		o = {
-			"episode": h["metadata"]["track"],
-			"title": h["metadata"]["title"],
-			"content": markdown.markdown(h["metadata"]["summary"]),
-			"subtitle": markdown.markdown(h["metadata"]["subtitle"]),
-			"date": h["change_time"],
+			"episode": h["data"]["metadata"]["track"],
+			"title": h["data"]["metadata"]["title"],
+			"content": markdown.markdown(h["data"]["metadata"]["summary"]),
+			"subtitle": markdown.markdown(h["data"]["metadata"]["subtitle"]),
+			"date": h["data"]["change_time"],
 			#TODO: make date format string configurable
-			"humandate": datetime.strptime(h["change_time"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y"),
-			"humanduration": datetime.strptime(h["length_timestring"], "%H:%M:%S.%f").strftime("%H:%M"),
-			"filename": h["output_basename"],
-			"duration": h["length_timestring"],
-			"chapters": h["chapters"]
+			"humandate": datetime.strptime(h["data"]["change_time"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d.%m.%Y"),
+			"humanduration": datetime.strptime(h["data"]["length_timestring"], "%H:%M:%S.%f").strftime("%H:%M"),
+			"filename": h["data"]["output_basename"],
+			"duration": h["data"]["length_timestring"],
+			"chapters": h["data"]["chapters"]
 		}
 		j = json.dumps(o, sort_keys=True, indent=4, separators=(',', ': '))
 
