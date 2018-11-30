@@ -118,9 +118,10 @@ def generate(channel, elements, settings):
 			element["enclosure"]["length"] = str(element["enclosure"]["length"])
 		ee["enclosure"] = etree.Element("enclosure", url=element["enclosure"]["url"], length=element["enclosure"]["length"], type=element["enclosure"]["type"])
 
-		encodedurl = urlquote(element["link"])
-		encodedtitle = urlquote(element["title"].encode('utf8'))
-		ee["flattr"] = etree.Element("{%s}link" % namespaces["atom"], rel="payment", href=settings["flattrlink"].format(encodedurl, encodedtitle), type="text/html")
+		if "flattrlink" in settings:
+			encodedurl = urlquote(element["link"])
+			encodedtitle = urlquote(element["title"].encode('utf8'))
+			ee["flattr"] = etree.Element("{%s}link" % namespaces["atom"], rel="payment", href=settings["flattrlink"].format(encodedurl, encodedtitle), type="text/html")
 
 		if element["chapters"] != []:
 			ee["chapters"] = _chapters(element, namespaces)
